@@ -6,9 +6,11 @@ const cors = require("cors");
 const cron = require('node-cron');
 app.use(cors());
 app.use(express.json());
-
-mongoose.connect(process.env.URL);
-
+const conect = async()=>{
+ await mongoose.connect(process.env.URL);
+}
+conect()
+console.log(process.env.URL);
 const formRouter = require("./routes/formRoute");
 const authRouter = require("./routes/authRoute");
 const logRouter = require("./routes/logRoute");
