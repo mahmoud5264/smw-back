@@ -1,8 +1,9 @@
 const Log = require("../models/logsModel");
 
 const getLogs = async (req, res) => {
+ // console.log(req.body);
   try {
-    let result = await Log.find({});
+    let result = await Log.find({}).sort({createdAt:-1});
     if (req.body.user) {
       result = result.filter((record) => {
         if (record.user == req.body.user) {
@@ -20,6 +21,7 @@ const getLogs = async (req, res) => {
     if (req.body.from) {
       result = result.filter((record) => {
         let tmp = JSON.stringify(record.createdAt).slice(1, 11);
+        console.log( req.body.from)
         let date1 = new Date(tmp).getTime();
         let date2 = new Date(req.body.from).getTime();
         if (date1 >= date2) {

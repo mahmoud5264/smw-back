@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 const classSchema = mongoose.Schema(
   {
-    name: String,
+    type:{ type: String, trim: true },
+    name: { type: String, trim: true },
   },
   { timestamps: true }
 );

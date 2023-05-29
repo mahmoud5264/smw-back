@@ -5,15 +5,15 @@ const IP = require("ip");
 const os = require("os");
 const User = require("../models/userModel");
 const Logo = require("../models/logoModel");
-
+const Form = require('../models/formModel')
 const signIn = async (req, res) => {
-  console.log(req.body);
-  if (!req.body.email) return res.status(400).json("Email is required");
+  //console.log(req.body);
+  if (!req.body.name) return res.status(400).json("name is required");
   if (!req.body.password) return res.status(400).json("Password is required");
 
   try {
-    let user = await User.find({ email: req.body.email });
-    let user2 = await User.find({ email: req.body.email }, { password: false });
+    let user = await User.find({ name: req.body.name });
+    let user2 = await User.find({ name: req.body.name }, { password: false });
     if (user.length == 0) return res.status(404).json("user not exist");
     user = user[0];
     user2 = user2[0];
@@ -26,7 +26,7 @@ const signIn = async (req, res) => {
       });
       await Log.create({
         type: "تسجيل دخول",
-        user: user.userName,
+        user: user.name,
         details: "",
         system: os.platform(),
         ip: IP.address(),
@@ -39,11 +39,12 @@ const signIn = async (req, res) => {
 };
 
 const signUp = async (req, res) => {
-  if (!req.body.email) return res.status(400).json("email is required");
-  if (!req.body.userName) return res.status(400).json("username is required");
+  //console.log(req.body);
+  if (!req.body.name) return res.status(400).json("name is required");
   if (!req.body.password) return res.status(400).json("Password is required");
-  if (!req.body.fullName) return res.status(400).json("fullName is required");
-  let { userName, password, fullName, phone, email, admin } = req.body;
+  if (!req.body.fullName) return res.status(400).json("full Name is required");
+  let { name, password, fullName, phone, email, admin, role } = req.body;
+  //console.log(role);
   let image = req.file ? req.file.path : undefined;
   try {
     const user = await User.find({ email: req.body.email });
@@ -53,19 +54,20 @@ const signUp = async (req, res) => {
     bcrypt.hash(password, 10).then(async (hashed) => {
       try {
         let user = await User.create({
-          userName,
+          name,
           password: hashed,
           fullName,
           phone,
           email,
           admin,
           image,
+          role,
         });
 
         await Log.create({
           type: "اضافه موظف",
           user: user.userName,
-          details: `تسجيل موظف جديد :${userName}`,
+          details: `تسجيل موظف جديد :${name}`,
           system: os.platform(),
           ip: IP.address(),
         });
@@ -73,43 +75,61 @@ const signUp = async (req, res) => {
         return res.status(400).json(err.message);
       }
 
-      res.status(200).json("signup sucessfully");
+      return res.status(200).json("signup sucessfully");
     });
   } catch (err) {
-    console.log(err);
+    return res.status(401).json(err);
+    console.log("xxxx", err);
   }
 };
 
 const editProfile = async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   try {
     if (req.params.id != req.user._id && !req.user.admin)
       return res.status(400).json("you are not authorized");
-    const user = await User.findById(req.params.id);
-    if (req.body.email) {
-      const test = await User.find({ email: req.body.email });
-      if (test.length && test[0].email != user.email) {
-        return res.status(400).json("not allowed to use this email");
-      }
-    }
+
     try {
+      let user = await User.findById(req.params.id);
+      if (req.body.email) {
+        const test = await User.find({ email: req.body.email });
+        if (test.length && test[0].email != user.email) {
+          return res.status(400).json("not allowed to use this email");
+        }
+      }
       let hashed = user.password;
+      
+      console.log(String(req.body.role).split(','));
       let image = req.file ? req.file.path : user.image;
       if (req.body.password)
         bcrypt.hash(password, 10).then((result) => {
           hashed = result;
         });
-      await User.findByIdAndUpdate(req.params.id, {
-        userName: req.body.userName || user.userName,
+      //    console.log("yyyyyyyyyy");
+      user = await User.findByIdAndUpdate(req.params.id, {
+        name: req.body.name || user.name,
         password: hashed,
         fullName: req.body.fullName || user.fullName,
         phone: req.body.phone || user.phone,
         email: req.body.email || user.email,
         admin: req.body.admin || user.admin,
         image: image,
+        role: (req.body.role? String(req.body.role).split(',')  : user.role),
       });
-      return res.status(200).json("user updated");
+      user = await User.findById(req.params.id);
+      const token = jwt.sign(user.toJSON(), "HS256", {
+        expiresIn: "24h",
+      });
+      await Log.create({
+        type: "تعديل بيانات",
+        user: user.name,
+        details: `قام ${req.user.name} بتعديل البيانات`,
+        system: os.platform(),
+        ip: IP.address(),
+      });
+      return res.status(200).json({ token: token });
     } catch (error) {
+      console.log(error);
       return res.status(400).json(error);
     }
   } catch (err) {
@@ -119,7 +139,7 @@ const editProfile = async (req, res) => {
 
 const getAll = async (req, res) => {
   try {
-    const data = await User.find({}, { password: false });
+    const data = await User.find({});
     return res.status(200).json(data);
   } catch (error) {
     return res.status(400).json(error);
@@ -127,6 +147,7 @@ const getAll = async (req, res) => {
 };
 
 const changeSign = async (req, res) => {
+  console.log(req.user.admin, req.file);
   if (!req.user.admin || !req.file)
     return res.status(400).json("you are not authorized");
   try {
@@ -150,6 +171,20 @@ const changeRole = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  console.log("x");
+  if (!req.user.admin && req.user._id != req.params.id)
+    return res.status(400).json("not authorized");
+  console.log("y");
+  try {
+    let user = await User.findById(req.params.id);
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+};
+
 const getLogo = async (req, res) => {
   try {
     const result = await Logo.find({});
@@ -158,6 +193,29 @@ const getLogo = async (req, res) => {
     res.status(400).json(error);
   }
 };
+
+const deleteUser = async (req, res) => {
+  console.log(req.user);
+  if (!req.user.admin && !req.user.role.includes("setting"))
+    return res.status(400).json("not authorized");
+  try {
+    await User.findByIdAndDelete(req.params.id)
+    return res.status(200).json('deleted')
+  } catch (error) {
+    return res.status(400).json(error)
+  }
+};
+
+// const numOfForms = async(req,res)=>{
+//   try {
+//     let len = await Form.find({})
+//     if(len) return res.status(200).json(len[len.length - 1].formNumber+1)
+//     else return res.status(200).json(1)
+//   } catch (error) {
+//     return res.status(400).json(error)
+    
+//   }
+// }
 module.exports = {
   signIn,
   signUp,
@@ -166,4 +224,7 @@ module.exports = {
   changeSign,
   changeRole,
   getLogo,
+  getUser,
+  deleteUser,
+  
 };

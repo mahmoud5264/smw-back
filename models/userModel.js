@@ -1,14 +1,16 @@
 const mongoose = require("mongoose");
 
 const userShema = mongoose.Schema({
-  userName: {
+  name: {
     type: String,
     required: true,
+    trim:true,
     maxLength: 20,
   },
   fullName: {
     type: String,
     required: true,
+    trim:true,
     maxLength: 40,
   },
   phone: {
@@ -23,7 +25,7 @@ const userShema = mongoose.Schema({
     trim: true,
     lowercase: true,
     unique: true,
-    required: true,
+ //   required: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       "Please fill a valid email address",
@@ -37,6 +39,7 @@ const userShema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  role: [{ type: String }],
 });
 const User = mongoose.model("User", userShema);
 module.exports = User;
