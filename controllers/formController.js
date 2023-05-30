@@ -74,11 +74,54 @@ const editForm = async (req, res) => {
     return res.status(400).json("id is not valid");
   }
 };
+const XLS = require("xlsx");
 
 const createForm = async (req, res) => {
-  console.log("zzzzzzz");
-  // if (!req.user.admin )
-  //   return res.status(400).json("user is not authorized");
+  if (!req.user.admin && req.user.role.includes("add"))
+    return res.status(400).json("user is not authorized");
+
+  if (req.file) {
+    try {
+      let workbook = XLS.read(req.file.buffer);
+      let data = [];
+
+      const sheets = workbook.SheetNames;
+
+      let size = await Form.find({}).sort({ formNumber: -1 }),
+        num;
+
+      !size.length ? (num = 1) : (num = size[0].formNumber + 1);
+
+      for (let i = 0; i < sheets.length; i++) {
+        const temp = XLS.utils.sheet_to_json(
+          workbook.Sheets[workbook.SheetNames[i]]
+        );
+        temp.forEach((res) => {
+          let tmp = {};
+          tmp.fullName = res["الاسم الكامل"];
+          tmp.birthPlace = res["مسقط الراس"];
+          tmp.birthDate = res["المواليد"];
+          tmp.classType = res["الشريحه"];
+          tmp.husbandName = res["اسم الزوج"];
+          tmp.recordNumber = res["رقم السجل"];
+          tmp.paperNumber = res["رقم الصحيفه"];
+          tmp.department = res["دائرة الاحوال"];
+          tmp.pieceNumber = res["رقم القطعه"];
+          tmp.addressNubmer = res["المقاطعه"];
+          tmp.area = res["المساحه"];
+          tmp.assignDate = res["تاريخ التخصيص"];
+          tmp.formNumber = num++;
+          data.push(tmp);
+        });
+      }
+      for (let i = 0; i < data.length; ++i) {
+        await Form.create(data[i]);
+      }
+    } catch (err) {
+      return res.status(400).json(err);
+    }
+    return res.json("x");
+  }
 
   let {
     assignDate,
@@ -98,7 +141,7 @@ const createForm = async (req, res) => {
   } = req.body;
   if (!req.body.fullName && !req.file)
     return res.status(400).json("data is not completed");
-  //console.log(req.body, req.file.path);
+  // console.log(req.body, req.file.path);
 
   try {
     if (department) {
@@ -119,7 +162,7 @@ const createForm = async (req, res) => {
         });
       }
     }
-//    const size = await Form.find({});
+
     await Form.create({
       assignDate,
       area,
@@ -165,9 +208,16 @@ const createForm = async (req, res) => {
 };
 
 const getForms = async (req, res) => {
-  console.log(req.user);
+  console.log(req.query.page);
+  let page = req.query.page || 1;
+  let limit = req.query.limit || 1000;
+  let start = (page - 1) * limit;
+  let end = page * limit;
   try {
-    const data = await Form.find({}).sort({ createdAt: -1 });
+    let data = await Form.find({})
+      .sort({ createdAt: -1 })
+      
+
     return res.status(200).json(data);
   } catch (error) {
     return res.status(400).json(error);
@@ -202,7 +252,7 @@ const deleteForm = async (req, res) => {
 };
 
 const getMyForms = async (req, res) => {
-  console.log((String(req.params.id)))
+  console.log(String(req.params.id));
   try {
     const forms = await Form.findById(req.params.id);
     return res.status(200).json(forms);
@@ -226,6 +276,12 @@ const getNumberOfForms = async (req, res) => {
 };
 
 const filter = async (req, res) => {
+  let page = req.query.page || 1;
+  let limit = req.query.limit || 1000;
+  let start = (page - 1) * limit;
+  let end = page * limit;
+  let searchType = req.body.searchType
+  let searchValue = req.body.searchValue
   try {
     let filterData = await Form.find({}).sort({ createdAt: -1 });
     if (req.body.searchType == "user") {
@@ -268,8 +324,8 @@ const filter = async (req, res) => {
           return form;
       });
     }
-    console.log(filterData);
-    return res.status(200).json(filterData);
+  //   console.log(filterData);
+    return res.status(200).json(filterData.slice(start,page * 30));
   } catch (error) {
     res.status(400).json(error);
   }

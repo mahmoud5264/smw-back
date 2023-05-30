@@ -61,7 +61,7 @@ const signUp = async (req, res) => {
           email,
           admin,
           image,
-          role,
+          role:String(req.body.role).split(',') ,
         });
 
         await Log.create({
@@ -84,28 +84,28 @@ const signUp = async (req, res) => {
 };
 
 const editProfile = async (req, res) => {
-  //console.log(req.body);
+  console.log(req.body);
   try {
     if (req.params.id != req.user._id && !req.user.admin)
       return res.status(400).json("you are not authorized");
 
     try {
       let user = await User.findById(req.params.id);
-      if (req.body.email) {
-        const test = await User.find({ email: req.body.email });
-        if (test.length && test[0].email != user.email) {
+      if (req.body.name) {
+        const test = await User.find({ name: req.body.name });
+        if (test.length && test[0].name != user.name) {
           return res.status(400).json("not allowed to use this email");
         }
       }
       let hashed = user.password;
-      
-      console.log(String(req.body.role).split(','));
+      console.log(req.body.role);
+      if(req.body.role) console.log(req.body.role);
       let image = req.file ? req.file.path : user.image;
       if (req.body.password)
-        bcrypt.hash(password, 10).then((result) => {
+        bcrypt.hash(req.body.password, 10).then((result) => {
           hashed = result;
         });
-      //    console.log("yyyyyyyyyy");
+        console.log("yyyyyyyyyy");
       user = await User.findByIdAndUpdate(req.params.id, {
         name: req.body.name || user.name,
         password: hashed,
@@ -114,7 +114,7 @@ const editProfile = async (req, res) => {
         email: req.body.email || user.email,
         admin: req.body.admin || user.admin,
         image: image,
-        role: (req.body.role? String(req.body.role).split(',')  : user.role),
+        role:  String(req.body.role).split(',')  ,
       });
       user = await User.findById(req.params.id);
       const token = jwt.sign(user.toJSON(), "HS256", {
@@ -172,10 +172,8 @@ const changeRole = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  console.log("x");
   if (!req.user.admin && req.user._id != req.params.id)
     return res.status(400).json("not authorized");
-  console.log("y");
   try {
     let user = await User.findById(req.params.id);
     return res.status(200).json(user);

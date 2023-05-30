@@ -19,6 +19,7 @@ const userShema = mongoose.Schema({
   },
   image: {
     type: String,
+    default:"https://res.cloudinary.com/dbymvhk8x/image/upload/v1684949619/unknown_wm4koi.png"
   },
   email: {
     type: String,

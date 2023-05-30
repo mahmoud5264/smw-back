@@ -1,7 +1,11 @@
 const Log = require("../models/logsModel");
 
 const getLogs = async (req, res) => {
- // console.log(req.body);
+  console.log(req.body);
+  let page = req.query.page || 1;
+  let limit = req.query.limit || 1000;
+  let start = (page - 1) * limit;
+  let end = page * limit;
   try {
     let result = await Log.find({}).sort({createdAt:-1});
     if (req.body.user) {
@@ -21,7 +25,6 @@ const getLogs = async (req, res) => {
     if (req.body.from) {
       result = result.filter((record) => {
         let tmp = JSON.stringify(record.createdAt).slice(1, 11);
-        console.log( req.body.from)
         let date1 = new Date(tmp).getTime();
         let date2 = new Date(req.body.from).getTime();
         if (date1 >= date2) {
@@ -39,7 +42,7 @@ const getLogs = async (req, res) => {
         }
       });
     }
-    res.status(200).json(result);
+    res.status(200).json(result.slice(start,end));
   } catch (error) {
     res.status(400).json(error);
   }

@@ -8,7 +8,7 @@ const add = async (req, res) => {
   if (!req.body.name || !req.user.admin)
     return res.status(400).json("you are not authorized");
   try {
-    const temp = await Class.find({ name: req.body.name });
+    const temp = await Class.find({ name: req.body.name,type:req.body.type });
  //   console.log(temp.length);
     if (temp.length) {
     } else {

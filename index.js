@@ -4,6 +4,10 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cron = require('node-cron');
+// const fileUpload = require("express-fileupload");
+// app.use(
+//   fileUpload()
+// );
 app.use(cors());
 app.use(express.json());
 const conect = async()=>{
