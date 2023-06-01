@@ -139,11 +139,12 @@ const createForm = async (req, res) => {
     fullName,
     beneficiary,
   } = req.body;
-  if (!req.body.fullName && !req.file)
-    return res.status(400).json("data is not completed");
+  // if (!req.body.fullName && !req.file)
+  //   return res.status(400).json("data is not completed");
   // console.log(req.body, req.file.path);
 
   try {
+    let size = await Form.find({})
     if (department) {
       const temp = await Class.findOne({ name: department, type: "address" });
       if (!temp) {
@@ -163,7 +164,7 @@ const createForm = async (req, res) => {
       }
     }
 
-    await Form.create({
+    let tmp = await Form.create({
       assignDate,
       area,
       pieceNumber,
@@ -178,7 +179,7 @@ const createForm = async (req, res) => {
       birthPlace,
       fullName,
       file: req.file ? req.file.path : null,
-      formNumber: req.body.formNumber,
+      formNumber: req.body.formNumber || size.length + 1,
       beneficiary,
       createdBy: req.user.fullName,
     });
@@ -199,8 +200,9 @@ const createForm = async (req, res) => {
         ip: IP.address(),
       });
     }
-    console.log("tmm");
-    return res.status(200).json("form added");
+    // console.log("tmm");
+    console.log(tmp._id);
+    return res.status(200).json(tmp._id);
   } catch (err) {
     console.log(err);
     return res.status(400).json(err);
