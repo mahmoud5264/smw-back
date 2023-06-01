@@ -179,7 +179,7 @@ const createForm = async (req, res) => {
       birthPlace,
       fullName,
       file: req.file ? req.file.path : null,
-      formNumber: req.body.formNumber || size.length + 1,
+      formNumber: size.length + 1,
       beneficiary,
       createdBy: req.user.fullName,
     });
@@ -293,10 +293,9 @@ const filter = async (req, res) => {
     }
     if (req.body.searchType == "assignDate") {
       filterData = filterData.filter((form) => {
-        let x = form.assignDate;
-        let date1 = new Date(String(req.body.searchValue)).getTime();
-        let date2 = new Date(x).getTime();
-        if (date1 == date2) return form;
+        // let date1 = new Date(String(req.body.searchValue)).getTime();
+        // let date2 = new Date(x).getTime();
+        if (form.assignDate == req.body.searchValue) return form;
       });
     }
     if (req.body.searchType == "formNumber") {
@@ -317,7 +316,7 @@ const filter = async (req, res) => {
           return form;
       });
     }
-    if (req.body.searchType == "name") {
+    if (req.body.searchType == "fullName") {
       filterData = filterData.filter((form) => {
         if (
           form.name == req.body.searchValue ||
