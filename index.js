@@ -11,7 +11,7 @@ const cron = require('node-cron');
 app.use(cors());
 app.use(express.json());
 const conect = async()=>{
- await mongoose.connect(process.env.URL);
+ await mongoose.connect("mongodb+srv://actional79:19991999abd@cluster0.su8lkhz.mongodb.net/");
 }
 conect()
 console.log(process.env.URL);
