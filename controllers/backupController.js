@@ -7,10 +7,10 @@ const Form = require("../models/formModel");
 const cron = require("node-cron");
 const axios = require("axios");
 
-let time = "0 28 2 * * 7";
+// let time = "0 28 2 * * 7";
 
-cron.schedule(time, async () => {
-   console.log("xxxxxxxx");
+//cron.schedule(time, async () => {
+//   console.log("xxxxxxxx");
   // try {
   
   // let result = {};
@@ -32,7 +32,7 @@ cron.schedule(time, async () => {
   // } catch (err) {
   //   console.log(err);
   // }
-});
+// });
 
 const setTime = async (req, res) => {
   if (!req.user.admin) return res.status(400).json("you are not authorized");
