@@ -14,7 +14,7 @@ const conect = async()=>{
  await mongoose.connect("mongodb+srv://actional79:19991999abd@cluster0.su8lkhz.mongodb.net/");
 }
 conect()
-console.log(process.env.URL);
+// console.log(process.env.URL);
 const formRouter = require("./routes/formRoute");
 const authRouter = require("./routes/authRoute");
 const logRouter = require("./routes/logRoute");
