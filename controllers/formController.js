@@ -110,6 +110,7 @@ const createForm = async (req, res) => {
           tmp.addressNubmer = res["المقاطعه"];
           tmp.area = res["المساحه"];
           tmp.assignDate = res["تاريخ التخصيص"];
+          tmp.beneficiary = true
           tmp.formNumber = num++;
           data.push(tmp);
         });
