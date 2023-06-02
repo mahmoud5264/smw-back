@@ -203,7 +203,7 @@ const createForm = async (req, res) => {
     }
     // console.log("tmm");
     console.log(tmp._id);
-    return res.status(200).json(tmp._id);
+    return res.status(200).json(tmp);
   } catch (err) {
     console.log(err);
     return res.status(400).json(err);
