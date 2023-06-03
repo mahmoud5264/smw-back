@@ -9,8 +9,9 @@ const cron = require("node-cron");
 //   fileUpload()
 // );
 app.use(cors({
-  origin:'*', 
-   credentials:true
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false
 }));
 app.use(express.json());
 const conect = async () => {
