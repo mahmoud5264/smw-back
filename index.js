@@ -11,7 +11,7 @@ const cron = require('node-cron');
 app.use(cors());
 app.use(express.json());
 const conect = async () => {
-  await mongoose.connect("mongodb+srv://actional79:19991999abd@cluster0.su8lkhz.mongodb.net/");
+  await mongoose.connect("https://swm-gov-backup.onrender.com");
 };
 conect()
 // console.log(process.env.URL);
