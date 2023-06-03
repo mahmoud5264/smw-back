@@ -7,32 +7,32 @@ const Form = require("../models/formModel");
 const cron = require("node-cron");
 const axios = require("axios");
 
-// let time = "0 28 2 * * 7";
+ let time = "0 28 2 * * 7";
 
-//cron.schedule(time, async () => {
-//   console.log("xxxxxxxx");
-  // try {
+cron.schedule(time, async () => {
+   console.log("xxxxxxxx");
+  try {
   
-  // let result = {};
-  // let users = await User.find({});
-  // result.users = users;
-  // let forms = await Form.find({});
-  // result.forms = forms;
-  // let logs = await Log.find({});
-  // result.logs = logs;
-  // let logo = await Logo.find({});
-  // result.logo = logo;
-  // let classes = await Class.find({});
-  // result.classes = classes;
-  // const res = await axios.post(process.env.EXhost, {
-  //   result,
-  // });
-  // console.log('res');
+  let result = {};
+  let users = await User.find({});
+  result.users = users;
+  let forms = await Form.find({});
+  result.forms = forms;
+  let logs = await Log.find({});
+  result.logs = logs;
+  let logo = await Logo.find({});
+  result.logo = logo;
+  let classes = await Class.find({});
+  result.classes = classes;
+  const res = await axios.post(process.env.EXhost, {
+    result,
+  });
+  console.log('res');
 
-  // } catch (err) {
-  //   console.log(err);
-  // }
-// });
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 const setTime = async (req, res) => {
   if (!req.user.admin) return res.status(400).json("you are not authorized");
@@ -70,3 +70,4 @@ module.exports = {
   setTime,
   getBackUp,
 };
+
