@@ -90,7 +90,7 @@ const createForm = async (req, res) => {
       let size = await Form.find({}).sort({ formNumber: -1 }),
         num;
 
-      !size.length ? (num = 1) : (num = size[0].formNumber + 1);
+      !size.length ? (num = 1) : (num = size[0].formNumber * 1 + 1);
 
       for (let i = 0; i < sheets.length; i++) {
         const temp = XLS.utils.sheet_to_json(
@@ -180,8 +180,8 @@ const createForm = async (req, res) => {
       birthPlace,
       fullName,
       file: req.file ? req.file.path : null,
-      formNumber: size.length + 1,
-      beneficiary,
+      formNumber: size[0].formNumber * 1 + 1,
+      beneficiary : req.body.b? false : true,
       createdBy: req.user.fullName,
     });
     if (!req.file) {
@@ -202,7 +202,7 @@ const createForm = async (req, res) => {
       });
     }
     // console.log("tmm");
-    console.log(tmp._id);
+    // console.log(tmp._id);
     return res.status(200).json(tmp);
   } catch (err) {
     console.log(err);
