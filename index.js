@@ -8,7 +8,10 @@ const cron = require("node-cron");
 // app.use(
 //   fileUpload()
 // );
-app.use(cors());
+app.use(cors({
+  origin:'*', 
+   credentials:true
+}));
 app.use(express.json());
 const conect = async () => {
   await mongoose.connect("mongodb+srv://actional79:19991999abd@cluster0.su8lkhz.mongodb.net/");
