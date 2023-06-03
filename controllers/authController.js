@@ -147,8 +147,8 @@ const getAll = async (req, res) => {
 };
 
 const changeSign = async (req, res) => {
-  console.log(req.user);
-  console.log( req.file);
+  //console.log(req.user);
+  //console.log( req.file);
  // if (!req.user.admin || !req.file)
   //  return res.status(400).json("you are not authorized");
    console.log( 'xxxxx' );
