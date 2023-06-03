@@ -87,10 +87,10 @@ const createForm = async (req, res) => {
 
       const sheets = workbook.SheetNames;
 
-      let size = await Form.find({}).sort({ formNumber: -1 }),
-        num;
+     // let size = await Form.find({}).sort({ formNumber: -1 }),
+     //   num;
 
-      !size.length ? (num = 1) : (num = size[0].formNumber * 1 + 1);
+     // !size.length ? (num = 1) : (num = size[0].formNumber * 1 + 1);
 
       for (let i = 0; i < sheets.length; i++) {
         const temp = XLS.utils.sheet_to_json(
@@ -111,7 +111,7 @@ const createForm = async (req, res) => {
           tmp.area = res["المساحه"];
           tmp.assignDate = res["تاريخ التخصيص"];
           tmp.beneficiary = true
-          tmp.formNumber = num++;
+          tmp.formNumber = res['رقم معرف']
           data.push(tmp);
         });
       }
