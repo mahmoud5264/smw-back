@@ -186,6 +186,7 @@ const getUser = async (req, res) => {
 const getLogo = async (req, res) => {
   try {
     const result = await Logo.find({});
+    console.log(result)
     return res.status(200).json(result[0].image);
   } catch (error) {
     res.status(400).json(error);
