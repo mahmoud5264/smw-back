@@ -145,7 +145,7 @@ const createForm = async (req, res) => {
   // console.log(req.body, req.file.path);
 
   try {
-    let size = await Form.find({})
+ let size = await Form.find({})
     if (department) {
       const temp = await Class.findOne({ name: department, type: "address" });
       if (!temp) {
@@ -180,7 +180,7 @@ const createForm = async (req, res) => {
       birthPlace,
       fullName,
       file: req.file ? req.file.path : null,
-      formNumber: size[0].formNumber * 1 + 1,
+      formNumber: req.body.formNumber || size[0].formNumber * 1 + 1,
       beneficiary : req.body.b? false : true,
       createdBy: req.user.fullName,
     });
