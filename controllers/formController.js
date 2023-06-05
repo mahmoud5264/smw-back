@@ -342,7 +342,7 @@ const getForms2 = async (req, res) => {
   let { search } = req.body;
   try {
     let data = []
-    if (req.body.search && req.body.search != "") {
+    if (search && search != "") {
        data = await Form.find({
         $or: [
           {
@@ -358,7 +358,6 @@ const getForms2 = async (req, res) => {
             motherName: search,
             classType: search,
             addressNubmer: search,
-            birthPlace: search,
           },
         ],
       })
