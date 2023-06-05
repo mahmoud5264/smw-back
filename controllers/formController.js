@@ -335,6 +335,30 @@ const filter = async (req, res) => {
     res.status(400).json(error);
   }
 };
+const getForms2 = async (req, res) => {
+  console.log(req.query.page);
+  let page = req.query.page || 1;
+  let limit = req.query.limit || 1000;
+  let start = (page - 1) * limit;
+  let end = page * limit;
+  try {
+    let len = null;
+    if (req.body.start) {
+      len = (await Form.find()).length;
+    }
+    let data = await Form.find({})
+      .sort({ createdAt: -1 })
+      .skip(start)
+      .limit(end);
+
+    return res.status(200).json({
+      len,
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
 
 module.exports = {
   createForm,
@@ -344,4 +368,5 @@ module.exports = {
   getMyForms,
   getNumberOfForms,
   filter,
+  getForms2
 };
