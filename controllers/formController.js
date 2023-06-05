@@ -345,8 +345,10 @@ const getForms2 = async (req, res) => {
       x = 0;
     let data = await Form.find({}).sort({ createdAt: -1 });
     for (let i = 0; i < data.length; ++i) {
-      let tmm = false;
+      let tmm = true, xx = false;
       if (fullName && fullName != "") {
+        tmm = false 
+        xx =true
         tmm = tmm || String(data[i]["husbandName"]).includes(fullName);
         tmm = tmm || String(data[i]["fullName"]).includes(fullName);
         tmm = tmm || String(data[i]["area"]).includes(fullName);
@@ -362,6 +364,7 @@ const getForms2 = async (req, res) => {
         tmm = tmm || String(data[i]["birthPlace"]).includes(fullName);
       }
       if (husbandName && husbandName != "") {
+        if(!xx) tmm = false
         tmm = tmm || String(data[i]["husbandName"]).includes(husbandName);
         tmm = tmm || String(data[i]["fullName"]).includes(husbandName);
         tmm = tmm || String(data[i]["area"]).includes(husbandName);
@@ -382,7 +385,6 @@ const getForms2 = async (req, res) => {
 
     return res.status(200).json(tmp);
   } catch (error) {
-    console.log(error)
     return res.status(400).json(error);
   }
 };
