@@ -15,7 +15,7 @@ app.use(cors({
 }));
 app.use(express.json());
 const conect = async () => {
-  await mongoose.connect("mongodb+srv://actional79:Qw123456@@@cluster0.su8lkhz.mongodb.net/");
+  await mongoose.connect("mongodb+srv://actional79:azsbzxe5F1zr0tTG@cluster0.su8lkhz.mongodb.net/");
 };
 /*
 server {
