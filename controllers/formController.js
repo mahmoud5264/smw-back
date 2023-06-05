@@ -336,7 +336,7 @@ const filter = async (req, res) => {
   }
 };
 const getForms2 = async (req, res) => {
-  console.log("xxxzzz", req.query.page);
+  console.log("xxxzzz", req.query.page, req.body);
   let page = req.query.page;
   let start = (page - 1) * 30;
   let { search } = req.body;
