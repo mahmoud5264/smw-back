@@ -336,31 +336,42 @@ const filter = async (req, res) => {
   }
 };
 const getForms2 = async (req, res) => {
-  console.log('xxxzzz',req.query.page , req.body);
+  console.log("xxxzzz", req.query.page);
   let page = req.query.page;
-  let start = (page-1) * 30;
+  let start = (page - 1) * 30;
   let { search } = req.body;
   try {
+    let data = []
+    if (req.body.search && req.body.search != "") {
+       data = await Form.find({
+        $or: [
+          {
+            husbandName: search,
+            fullName: search,
+            area: search,
+            assignDate: search,
+            formNumber: search,
+            pieceNumber: search,
+            department: search,
+            paperNumber: search,
+            recordNumber: search,
+            motherName: search,
+            classType: search,
+            addressNubmer: search,
+            birthPlace: search,
+          },
+        ],
+      })
+        .sort({ createdAt: -1 })
+        .skip(start)
+        .limit(page * 30);
+    }else{
+      data = await Form.find()
+        .sort({ createdAt: -1 })
+        .skip(start)
+        .limit(page * 30);
 
-    let data = await Form.find({
-      $or: [
-        {
-          husbandName: search,
-          fullName: search,
-          area: search,
-          assignDate: search,
-          formNumber: search,
-          pieceNumber: search,
-          department: search,
-          paperNumber: search,
-          recordNumber: search,
-          motherName: search,
-          classType: search,
-          addressNubmer: search,
-          birthPlace: search,
-        },
-      ],
-    }).sort({ createdAt: -1 }).skip(start).limit(page * 30);
+    }
     // for (let i = 0; i < data.length; ++i) {
     //   let tmm = true,
     //     xx = false;
