@@ -216,13 +216,16 @@ const createForm = async (req, res) => {
 
 const getForms = async (req, res) => {
   console.log(req.query.page);
-  let page = req.query.page || 1;
-  let limit = req.query.limit || 1000;
-  let start = (page - 1) * limit;
-  let end = page * limit;
+  let page = req.query.page ;
+//   let limit = req.query.limit ;
+  let start = (page - 1) * 30;
+  let end = page * 30;
   try {
-     let data = await Form.find({}).sort({ createdAt: -1 }).skip(start).limit(30);
-      
+    let data = []
+    if(page)
+     data = await Form.find({}).sort({ createdAt: -1 }).skip(start).limit(30);
+    else
+      data = await Form.find({}).sort({ createdAt: -1 })
 
     return res.status(200).json(data);
   } catch (error) {
