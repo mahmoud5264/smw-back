@@ -118,7 +118,7 @@ const createForm = async (req, res) => {
 
       
       try {
-        await Form.insertMany(data);
+         Form.insertMany(data);
       } catch (err) {
         console.log(err);
       }
