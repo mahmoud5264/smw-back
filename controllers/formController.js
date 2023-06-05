@@ -343,22 +343,22 @@ const getForms2 = async (req, res) => {
   try {
     let data = []
     if (req.body.search && req.body.search != "" &&  Object.keys(req.body.search).length != 0 ) {
-      console.log('pppppppppp',search)
        data = await Form.find({
         $or: [
           {
-            husbandName: search,
-            fullName: search,
-            area: search,
-            assignDate: search,
-            formNumber: search,
-            pieceNumber: search,
-            department: search,
-            paperNumber: search,
-            recordNumber: search,
-            motherName: search,
-            classType: search,
-            addressNubmer: search,
+            husbandName: String(search),
+            fullName: String(search),
+            area: String(search),
+            assignDate: String(search),
+            formNumber: String(search),
+            pieceNumber: String(search),
+            department: String(search),
+            paperNumber: String(search),
+            recordNumber: String(search),
+            motherName: String(search),
+            classType: String(search),
+            addressNubmer: String(search),
+            birthPlace:String(search)
           },
         ],
       })
