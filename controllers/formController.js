@@ -91,8 +91,7 @@ const createForm = async (req, res) => {
      //   num;
 
      // !size.length ? (num = 1) : (num = size[0].formNumber * 1 + 1);
-      console.log('xxxx filr ', sheets.length)
-      /* for (let i = 0; i < sheets.length; i++) {
+       for (let i = 0; i < sheets.length; i++) {
         const temp = XLS.utils.sheet_to_json(
           workbook.Sheets[workbook.SheetNames[i]]
         );
@@ -115,6 +114,9 @@ const createForm = async (req, res) => {
           data.push(tmp);
         });
       }
+            console.log('xxxx filr ', data.length)
+
+      /*
       for (let i = 0; i < data.length; ++i) {
         await Form.create(data[i]);
       }*/
