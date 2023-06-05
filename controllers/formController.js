@@ -338,52 +338,70 @@ const filter = async (req, res) => {
 const getForms2 = async (req, res) => {
   console.log(req.query.page);
   let page = req.query.page;
-  let start = page * 30;
-  let { fullName, husbandName } = req.body;
+  let start = (page-1) * 30;
+  let { search } = req.body;
   try {
-    let tmp = [],
-      x = 0;
-    let data = await Form.find({}).sort({ createdAt: -1 });
-    for (let i = 0; i < data.length; ++i) {
-      let tmm = true, xx = false;
-      if (fullName && fullName != "") {
-        tmm = false 
-        xx =true
-        tmm = tmm || String(data[i]["husbandName"]).includes(fullName);
-        tmm = tmm || String(data[i]["fullName"]).includes(fullName);
-        tmm = tmm || String(data[i]["area"]).includes(fullName);
-        tmm = tmm || String(data[i]["assignDate"]).includes(fullName);
-        tmm = tmm || String(data[i]["formNumber"]).includes(fullName);
-        tmm = tmm || String(data[i]["pieceNumber"]).includes(fullName);
-        tmm = tmm || String(data[i]["department"]).includes(fullName);
-        tmm = tmm || String(data[i]["paperNumber"]).includes(fullName);
-        tmm = tmm || String(data[i]["recordNumber"]).includes(fullName);
-        tmm = tmm || String(data[i]["motherName"]).includes(fullName);
-        tmm = tmm || String(data[i]["classType"]).includes(fullName);
-        tmm = tmm || String(data[i]["addressNubmer"]).includes(fullName);
-        tmm = tmm || String(data[i]["birthPlace"]).includes(fullName);
-      }
-      if (husbandName && husbandName != "") {
-        if(!xx) tmm = false
-        tmm = tmm || String(data[i]["husbandName"]).includes(husbandName);
-        tmm = tmm || String(data[i]["fullName"]).includes(husbandName);
-        tmm = tmm || String(data[i]["area"]).includes(husbandName);
-        tmm = tmm || String(data[i]["assignDate"]).includes(husbandName);
-        tmm = tmm || String(data[i]["formNumber"]).includes(husbandName);
-        tmm = tmm || String(data[i]["pieceNumber"]).includes(husbandName);
-        tmm = tmm || String(data[i]["department"]).includes(husbandName);
-        tmm = tmm || String(data[i]["paperNumber"]).includes(husbandName);
-        tmm = tmm || String(data[i]["recordNumber"]).includes(husbandName);
-        tmm = tmm || String(data[i]["motherName"]).includes(husbandName);
-        tmm = tmm || String(data[i]["classType"]).includes(husbandName);
-        tmm = tmm || String(data[i]["birthPlace"]).includes(husbandName);
-      }
-      if (tmm) x++;
-      if (tmm && x >= start) tmp.push(data[i]);
-      if (tmp.length == 30) break;
-    }
 
-    return res.status(200).json(tmp);
+    let data = await Form.find({
+      $or: [
+        {
+          husbandName: search,
+          fullName: search,
+          area: search,
+          assignDate: search,
+          formNumber: search,
+          pieceNumber: search,
+          department: search,
+          paperNumber: search,
+          recordNumber: search,
+          motherName: search,
+          classType: search,
+          addressNubmer: search,
+          birthPlace: search,
+        },
+      ],
+    }).sort({ createdAt: -1 }).skip(start).limit(page * 30);
+    // for (let i = 0; i < data.length; ++i) {
+    //   let tmm = true,
+    //     xx = false;
+    //   if (fullName && fullName != "") {
+    //     tmm = false;
+    //     xx = true;
+    //     tmm = tmm || String(data[i]["husbandName"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["fullName"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["area"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["assignDate"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["formNumber"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["pieceNumber"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["department"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["paperNumber"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["recordNumber"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["motherName"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["classType"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["addressNubmer"]).includes(fullName);
+    //     tmm = tmm || String(data[i]["birthPlace"]).includes(fullName);
+    //   }
+    //   if (husbandName && husbandName != "") {
+    //     if (!xx) tmm = false;
+    //     tmm = tmm || String(data[i]["husbandName"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["fullName"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["area"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["assignDate"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["formNumber"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["pieceNumber"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["department"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["paperNumber"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["recordNumber"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["motherName"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["classType"]).includes(husbandName);
+    //     tmm = tmm || String(data[i]["birthPlace"]).includes(husbandName);
+    //   }
+    //   if (tmm) x++;
+    //   if (tmm && x >= start) tmp.push(data[i]);
+    //   if (tmp.length == 30) break;
+    // }
+
+    return res.status(200).json(data);
   } catch (error) {
     return res.status(400).json(error);
   }
