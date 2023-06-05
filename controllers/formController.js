@@ -380,7 +380,7 @@ const getForms2 = async (req, res) => {
       if (tmp.length == 30) break;
     }
 
-    return res.status(200).json(data);
+    return res.status(200).json(tmp);
   } catch (error) {
     console.log(error)
     return res.status(400).json(error);
