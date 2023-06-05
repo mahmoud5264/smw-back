@@ -366,7 +366,7 @@ const getForms2 = async (req, res) => {
         .skip(start)
         .limit(page * 30);
     }else{
-      data = await Form.find()
+      data = await Form.find({})
         .sort({ createdAt: -1 })
         .skip(start)
         .limit(page * 30);
