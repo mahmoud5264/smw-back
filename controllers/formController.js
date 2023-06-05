@@ -117,10 +117,10 @@ const createForm = async (req, res) => {
       }
       for (let i = 0; i < data.length; ++i) {
         await Form.create(data[i]);
-      }
+      }*/
     } catch (err) {
       return res.status(400).json(err);
-    }*/
+    }
     return res.json("x");
   }
 
