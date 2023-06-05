@@ -343,6 +343,7 @@ const getForms2 = async (req, res) => {
   try {
     let data = []
     if (search && search != "" && search != {}) {
+      console.log('pppppppppp',search)
        data = await Form.find({
         $or: [
           {
