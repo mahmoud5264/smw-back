@@ -117,12 +117,10 @@ const createForm = async (req, res) => {
             console.log('xxxx filr ', data.length)
 
       
-      for (let i = 0; i < data.length; ++i) {
-       try {
-          await Form.create(data[i]);
-        } catch (err) {
-          console.log(err);
-        }
+      try {
+        await Form.insertMany(data);
+      } catch (err) {
+        console.log(err);
       }
     } catch (err) {
       return res.status(400).json(err);
