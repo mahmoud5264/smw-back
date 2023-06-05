@@ -222,7 +222,7 @@ const getForms = async (req, res) => {
   let end = page * 30;
   try {
     let data = await Form.find({}).sort({ createdAt: -1 });
-    return res.status(200).json({ data: data.slice(0, 30), len: data.length });
+    return res.status(200).json({ len: data.length, data: data.slice(0, 30) });
 
     return res.status(200).json(data);
   } catch (error) {
