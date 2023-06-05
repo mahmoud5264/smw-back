@@ -221,11 +221,8 @@ const getForms = async (req, res) => {
   let start = (page - 1) * 30;
   let end = page * 30;
   try {
-    let data = []
-    if(page)
-     data = await Form.find({}).sort({ createdAt: -1 }).skip(start).limit(30);
-    else
-      data = await Form.find({}).sort({ createdAt: -1 })
+    let data = await Form.find({}).sort({ createdAt: -1 });
+    return res.status(200).json({ data: data.slice(0, 30), len: data.length });
 
     return res.status(200).json(data);
   } catch (error) {
