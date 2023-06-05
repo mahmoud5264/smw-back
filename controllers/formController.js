@@ -337,24 +337,50 @@ const filter = async (req, res) => {
 };
 const getForms2 = async (req, res) => {
   console.log(req.query.page);
-  let page = req.query.page || 1;
-  let limit = req.query.limit || 1000;
-  let start = (page - 1) * limit;
-  let end = page * limit;
+  let page = req.query.page;
+  let start = page * 30;
+  let { fullName, husbandName } = req.body;
   try {
-    let len = null;
-    if (req.body.start) {
-      len = (await Form.find()).length;
+    let tmp = [],
+      x = 0;
+    let data = await Form.find({}).sort({ createdAt: -1 });
+    for (let i = 0; i < data.length; ++i) {
+      let tmm = false;
+      if (fullName && fullName != "") {
+        tmm = tmm || String(data[i]["husbandName"]).includes(fullName);
+        tmm = tmm || String(data[i]["fullName"]).includes(fullName);
+        tmm = tmm || String(data[i]["area"]).includes(fullName);
+        tmm = tmm || String(data[i]["assignDate"]).includes(fullName);
+        tmm = tmm || String(data[i]["formNumber"]).includes(fullName);
+        tmm = tmm || String(data[i]["pieceNumber"]).includes(fullName);
+        tmm = tmm || String(data[i]["department"]).includes(fullName);
+        tmm = tmm || String(data[i]["paperNumber"]).includes(fullName);
+        tmm = tmm || String(data[i]["recordNumber"]).includes(fullName);
+        tmm = tmm || String(data[i]["motherName"]).includes(fullName);
+        tmm = tmm || String(data[i]["classType"]).includes(fullName);
+        tmm = tmm || String(data[i]["addressNubmer"]).includes(fullName);
+        tmm = tmm || String(data[i]["birthPlace"]).includes(fullName);
+      }
+      if (husbandName && husbandName != "") {
+        tmm = tmm || String(data[i]["husbandName"]).includes(husbandName);
+        tmm = tmm || String(data[i]["fullName"]).includes(husbandName);
+        tmm = tmm || String(data[i]["area"]).includes(husbandName);
+        tmm = tmm || String(data[i]["assignDate"]).includes(husbandName);
+        tmm = tmm || String(data[i]["formNumber"]).includes(husbandName);
+        tmm = tmm || String(data[i]["pieceNumber"]).includes(husbandName);
+        tmm = tmm || String(data[i]["department"]).includes(husbandName);
+        tmm = tmm || String(data[i]["paperNumber"]).includes(husbandName);
+        tmm = tmm || String(data[i]["recordNumber"]).includes(husbandName);
+        tmm = tmm || String(data[i]["motherName"]).includes(husbandName);
+        tmm = tmm || String(data[i]["classType"]).includes(husbandName);
+        tmm = tmm || String(data[i]["birthPlace"]).includes(husbandName);
+      }
+      if (tmm) x++;
+      if (tmm && x >= start) tmp.push(data[i]);
+      if (tmp.length == 30) break;
     }
-    let data = await Form.find({})
-      .sort({ createdAt: -1 })
-      .skip(start)
-      .limit(end);
 
-    return res.status(200).json({
-      len,
-      data,
-    });
+    return res.status(200).json(data);
   } catch (error) {
     return res.status(400).json(error);
   }
