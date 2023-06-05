@@ -7,7 +7,7 @@ const cron = require("node-cron");
 // const fileUpload = require("express-fileupload");
 // app.use(
 //   fileUpload()
-// );
+// )
 app.use(cors({
   "origin": "*",
   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
