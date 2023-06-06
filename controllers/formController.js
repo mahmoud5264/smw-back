@@ -150,7 +150,7 @@ const createForm = async (req, res) => {
   try {
     let size = await Form.find({}).sort({ createdAt: -1 }).limit(1);
     if (department) {
-      Class.update(
+      Class.findOneAndUpdate(
         {
           name: department,
           type: "address",
@@ -163,7 +163,7 @@ const createForm = async (req, res) => {
     }
     if (classType) {
       //      const temp2 = await Class.findOne({ name: classType, type: "classType" });
-      Class.update(
+      Class.findOneAndUpdate(
         {
           name: department,
           type: "classType",
