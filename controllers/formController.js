@@ -189,7 +189,7 @@ const createForm = async (req, res) => {
       birthDate,
       birthPlace,
       fullName,
-      formNumber:  size[0].formNumber * 1 + 1 || ,
+      formNumber:  size[0].formNumber * 1 + 1 ,
       beneficiary: req.body.b ? false : true,
       createdBy: req.user.fullName,
     });
