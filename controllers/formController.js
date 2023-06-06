@@ -87,11 +87,11 @@ const createForm = async (req, res) => {
 
       const sheets = workbook.SheetNames;
 
-     // let size = await Form.find({}).sort({ formNumber: -1 }),
-     //   num;
+      // let size = await Form.find({}).sort({ formNumber: -1 }),
+      //   num;
 
-     // !size.length ? (num = 1) : (num = size[0].formNumber * 1 + 1);
-       for (let i = 0; i < sheets.length; i++) {
+      // !size.length ? (num = 1) : (num = size[0].formNumber * 1 + 1);
+      for (let i = 0; i < sheets.length; i++) {
         const temp = XLS.utils.sheet_to_json(
           workbook.Sheets[workbook.SheetNames[i]]
         );
@@ -109,16 +109,15 @@ const createForm = async (req, res) => {
           tmp.addressNubmer = res["المقاطعه"];
           tmp.area = res["المساحه"];
           tmp.assignDate = res["تاريخ التخصيص"];
-          tmp.beneficiary = true
-          tmp.formNumber = res['رقم معرف']
+          tmp.beneficiary = true;
+          tmp.formNumber = res["رقم معرف"];
           data.push(tmp);
         });
       }
-            console.log('xxxx filr ', data.length)
+      console.log("xxxx filr ", data.length);
 
-      
       try {
-         Form.insertMany(data);
+        Form.insertMany(data);
       } catch (err) {
         console.log(err);
       }
@@ -149,27 +148,34 @@ const createForm = async (req, res) => {
   // console.log(req.body, req.file.path);
 
   try {
- let size = await Form.find({})
+    let size = await Form.find({});
     if (department) {
-      const temp = await Class.findOne({ name: department, type: "address" });
-      if (!temp) {
-        await Class.create({
+      Class.update(
+        {
           name: department,
           type: "address",
-        });
-      }
+        },
+        {
+          $setOnInsert: { name: department, type: "address" },
+        },
+        { upsert: true }
+      );
     }
     if (classType) {
-      const temp2 = await Class.findOne({ name: classType, type: "classType" });
-      if (!temp2) {
-        await Class.create({
-          name: classType,
+      //      const temp2 = await Class.findOne({ name: classType, type: "classType" });
+      Class.update(
+        {
+          name: department,
           type: "classType",
-        });
-      }
+        },
+        {
+          $setOnInsert: { name: department, type: "classType" },
+        },
+        { upsert: true }
+      );
     }
 
-    let tmp = await Form.create({
+    let tmp = Form.insertOne({
       assignDate,
       area,
       pieceNumber,
@@ -183,13 +189,12 @@ const createForm = async (req, res) => {
       birthDate,
       birthPlace,
       fullName,
-      file: req.file ? req.file.path : null,
       formNumber: req.body.formNumber || size[0].formNumber * 1 + 1,
-      beneficiary : req.body.b? false : true,
+      beneficiary: req.body.b ? false : true,
       createdBy: req.user.fullName,
     });
     if (!req.file) {
-      await Log.create({
+      Log.insertOne({
         type: "اضافه استماره",
         user: req.user.name,
         details: `أضافة استمارة جديد تحت اسم:${fullName}`,
@@ -197,7 +202,7 @@ const createForm = async (req, res) => {
         ip: IP.address(),
       });
     } else {
-      await Log.create({
+      await Log.insertOne({
         type: "اضافه ملف excel",
         user: req.user.name,
         details: `اضافه ملف اكسل جديد`,
@@ -216,17 +221,17 @@ const createForm = async (req, res) => {
 
 const getForms = async (req, res) => {
   console.log(req.query.page);
-  let page = req.query.page ;
-//   let limit = req.query.limit ;
+  let page = req.query.page;
+  //   let limit = req.query.limit ;
   let start = (page - 1) * 30;
   let end = page * 30;
   try {
-    let data = await Form.find({})
+    let data = await Form.find({});
     return res.status(200).json({ len: data.length, data: data.slice(0, 30) });
 
     return res.status(200).json(data);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(400).json(error);
   }
 };
@@ -287,8 +292,8 @@ const filter = async (req, res) => {
   let limit = req.query.limit || 1000;
   let start = (page - 1) * limit;
   let end = page * limit;
-  let searchType = req.body.searchType
-  let searchValue = req.body.searchValue
+  let searchType = req.body.searchType;
+  let searchValue = req.body.searchValue;
   try {
     let filterData = await Form.find({}).sort({ createdAt: -1 });
     if (req.body.searchType == "user") {
@@ -330,8 +335,8 @@ const filter = async (req, res) => {
           return form;
       });
     }
-  //   console.log(filterData);
-    return res.status(200).json(filterData.slice(start,page * 30));
+    //   console.log(filterData);
+    return res.status(200).json(filterData.slice(start, page * 30));
   } catch (error) {
     res.status(400).json(error);
   }
@@ -342,9 +347,13 @@ const getForms2 = async (req, res) => {
   let start = (page - 1) * 30;
   let { search } = req.body;
   try {
-    let data = []
-    if (req.body.search && req.body.search != "" &&  Object.keys(req.body.search).length != 0 ) {
-       data = await Form.find({
+    let data = [];
+    if (
+      req.body.search &&
+      req.body.search != "" &&
+      Object.keys(req.body.search).length != 0
+    ) {
+      data = await Form.find({
         $or: [
           {
             husbandName: search,
@@ -361,22 +370,20 @@ const getForms2 = async (req, res) => {
           { classType: search },
           { addressNubmer: search },
           { birthPlace: search },
-        ]
+        ],
       })
         .skip(start)
         .limit(page * 30);
-    }else{
+    } else {
       data = await Form.find({})
         .sort({ createdAt: -1 })
         .skip(start)
         .limit(page * 30);
-
     }
-  
 
     return res.status(200).json(data);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(400).json(error);
   }
 };
@@ -389,5 +396,5 @@ module.exports = {
   getMyForms,
   getNumberOfForms,
   filter,
-  getForms2
+  getForms2,
 };
