@@ -148,7 +148,7 @@ const createForm = async (req, res) => {
   // console.log(req.body, req.file.path);
 
   try {
-    let size = await Form.find({});
+    let size = await Form.find({}).sort({ createdAt: -1 }).limit(1);
     if (department) {
       Class.update(
         {
@@ -189,7 +189,7 @@ const createForm = async (req, res) => {
       birthDate,
       birthPlace,
       fullName,
-      formNumber:  size[0].formNumber * 1 + 1 ,
+      formNumber:  size.length?size[0].formNumber * 1 + 1 : 1 ,
       beneficiary: req.body.b ? false : true,
       createdBy: req.user.fullName,
     });
@@ -226,7 +226,7 @@ const getForms = async (req, res) => {
   let start = (page - 1) * 30;
   let end = page * 30;
   try {
-     let data = await Form.find({}).sort(createdAt:-1).limit(30);
+     let data = await Form.find({}).sort({ createdAt: -1 }).limit(30);
     return res.status(200).json({ len: "000", data: data });
 
     return res.status(200).json(data);
