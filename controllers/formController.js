@@ -175,7 +175,7 @@ const createForm = async (req, res) => {
       );
     }
 
-     Form.insertOne({
+    await Form.create({
       assignDate,
       area,
       pieceNumber,
@@ -194,7 +194,7 @@ const createForm = async (req, res) => {
       createdBy: req.user.fullName,
     });
     if (!req.file) {
-      Log.insertOne({
+      Log.create({
         type: "اضافه استماره",
         user: req.user.name,
         details: `أضافة استمارة جديد تحت اسم:${fullName}`,
@@ -202,7 +202,7 @@ const createForm = async (req, res) => {
         ip: IP.address(),
       });
     } else {
-      await Log.insertOne({
+       Log.create({
         type: "اضافه ملف excel",
         user: req.user.name,
         details: `اضافه ملف اكسل جديد`,
