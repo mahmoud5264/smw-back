@@ -175,7 +175,7 @@ const createForm = async (req, res) => {
       );
     }
 
-    await Form.create({
+    let tmp = await Form.create({
       assignDate,
       area,
       pieceNumber,
