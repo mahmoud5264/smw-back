@@ -175,7 +175,7 @@ const createForm = async (req, res) => {
       );
     }
 
-    let tmp = Form.insertOne({
+     Form.insertOne({
       assignDate,
       area,
       pieceNumber,
@@ -227,7 +227,7 @@ const getForms = async (req, res) => {
   let end = page * 30;
   try {
      let data = await Form.find({}).sort({ createdAt: -1 }).limit(30);
-    return res.status(200).json({ len: "000", data: data });
+    return res.status(200).json({ len: data[0].formNumber, data: data });
 
     return res.status(200).json(data);
   } catch (error) {
