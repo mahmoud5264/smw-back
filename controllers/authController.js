@@ -47,7 +47,7 @@ const signUp = async (req, res) => {
   //console.log(role);
   let image = req.file ? req.file.path : undefined;
   try {
-    const user = await User.find({ email: req.body.email });
+    const user = await User.find({ name: req.body.name });
     if (user.length > 0) {
       return res.status(400).json("user already exists");
     }
