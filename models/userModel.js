@@ -25,7 +25,6 @@ const userShema = mongoose.Schema({
     type: String,
     trim: true,
     lowercase: true,
-    unique: true,
  //   required: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
