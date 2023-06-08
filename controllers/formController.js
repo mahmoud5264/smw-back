@@ -295,7 +295,7 @@ const filter = async (req, res) => {
   let searchValue = req.body.searchValue;
   try {
     let filterData = []
-    if (req.body.searchType == "user") {
+    if (req.body.searchType == "fullName") {
       filterData = await Form.find( {"fullName" : {$regex : searchValue}}).sort(createdAt:-1).skip(start).limit(end);
     }
     if (req.body.searchType == "assignDate") {
@@ -323,15 +323,15 @@ const filter = async (req, res) => {
           return form;
       });
     }
-    if (req.body.searchType == "fullName") {
-      filterData = filterData.filter((form) => {
-        if (
-          form.name == req.body.searchValue ||
-          form.fullName.includes(req.body.searchValue)
-        )
-          return form;
-      });
-    }
+//     if (req.body.searchType == "fullName") {
+//       filterData = filterData.filter((form) => {
+//         if (
+//           form.name == req.body.searchValue ||
+//           form.fullName.includes(req.body.searchValue)
+//         )
+//           return form;
+//       });
+//     }
     //   console.log(filterData);
     return res.status(200).json(filterData.slice(start, page * 30));
   } catch (error) {
