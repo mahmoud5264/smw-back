@@ -21,13 +21,7 @@ const userShema = mongoose.Schema({
     type: String,
     default:"https://res.cloudinary.com/dbymvhk8x/image/upload/v1684949619/unknown_wm4koi.png"
   },
-  email: {
-    type: String,
-    trim: true,
-//     lowercase: true,
- //   required: true,
-    
-  },
+
   password: {
     type: String,
     required: true,
