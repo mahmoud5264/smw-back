@@ -299,29 +299,13 @@ const filter = async (req, res) => {
       filterData = await Form.find( {"fullName" : {$regex : searchValue}}).sort({createdAt:-1}).skip(start).limit(end);
     }
     if (req.body.searchType == "assignDate") {
-      filterData = filterData.filter((form) => {
-        // let date1 = new Date(String(req.body.searchValue)).getTime();
-        // let date2 = new Date(x).getTime();
-        if (form.assignDate == req.body.searchValue) return form;
-      });
+      filterData = await Form.find( {"assignDate" : {$regex : searchValue}}).sort({createdAt:-1}).skip(start).limit(end);
     }
     if (req.body.searchType == "formNumber") {
-      filterData = filterData.filter((form) => {
-        if (
-          String(form.formNumber).trim() == String(req.body.searchValue).trim()
-        )
-          return form;
-      });
+      filterData = await Form.find( {"formNumber" : searchValue}).sort({createdAt:-1}).skip(start).limit(end);
     }
     if (req.body.searchType == "husbandName") {
-      filterData = filterData.filter((form) => {
-        if (
-          String(form.husbandName)
-            .trim()
-            .includes(String(req.body.searchValue).trim())
-        )
-          return form;
-      });
+      filterData = await Form.find( {"husbandName" : {$regex : searchValue}}).sort({createdAt:-1}).skip(start).limit(end);
     }
 //     if (req.body.searchType == "fullName") {
 //       filterData = filterData.filter((form) => {
@@ -333,7 +317,7 @@ const filter = async (req, res) => {
 //       });
 //     }
     //   console.log(filterData);
-    return res.status(200).json(filterData.slice(start, page * 30));
+    return res.status(200).json(filterData);
   } catch (error) {
     res.status(400).json(error);
   }
