@@ -370,7 +370,7 @@ const getForms2 = async (req, res) => {
           { addressNubmer: search },
           { birthPlace: search },
         ],
-      })
+      }).sort({ createdAt: -1 })
         .skip(start)
         .limit(page * 30);
     } else {
