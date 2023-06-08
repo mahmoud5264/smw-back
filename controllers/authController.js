@@ -58,7 +58,6 @@ const signUp = async (req, res) => {
           password: hashed,
           fullName,
           phone,
-          email,
           admin,
           image,
           role:String(req.body.role).split(',') ,
