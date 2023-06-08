@@ -296,7 +296,7 @@ const filter = async (req, res) => {
   try {
     let filterData = []
     if (req.body.searchType == "user") {
-      filterData = await Form.find( {"user" : {$regex : searchValue}}).sort(createdAt:-1).skip(start).limit(end);
+      filterData = await Form.find( {"fullName" : {$regex : searchValue}}).sort(createdAt:-1).skip(start).limit(end);
     }
     if (req.body.searchType == "assignDate") {
       filterData = filterData.filter((form) => {
