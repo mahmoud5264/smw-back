@@ -43,7 +43,7 @@ const signUp = async (req, res) => {
   if (!req.body.name) return res.status(400).json("name is required");
   if (!req.body.password) return res.status(400).json("Password is required");
   if (!req.body.fullName) return res.status(400).json("full Name is required");
-  let { name, password, fullName, phone, email, admin, role } = req.body;
+  let { name, password, fullName, phone, admin, role } = req.body;
   //console.log(role);
   let image = req.file ? req.file.path : undefined;
   try {
