@@ -295,7 +295,7 @@ const filter = async (req, res) => {
   let searchType = req.body.searchType;
   let searchValue = req.body.searchValue;
   try {
-    let filterData = await Form.find({}).sort({ createdAt: -1 });
+    let filterData = await Form.find({}).sort({ createdAt: -1 }).limit(1000);
     if (req.body.searchType == "user") {
       filterData = filterData.filter((form) => {
         if (form.createdBy == req.body.searchValue) return form;
