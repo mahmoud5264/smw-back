@@ -110,7 +110,6 @@ const editProfile = async (req, res) => {
         password: hashed,
         fullName: req.body.fullName || user.fullName,
         phone: req.body.phone || user.phone,
-        email: req.body.email || user.email,
         admin: req.body.admin || user.admin,
         image: image,
         role:  String(req.body.role).split(',')  ,
