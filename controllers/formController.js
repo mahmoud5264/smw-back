@@ -289,9 +289,8 @@ const getNumberOfForms = async (req, res) => {
 
 const filter = async (req, res) => {
   let page = req.query.page || 1;
-  let limit = req.query.limit || 1000;
-  let start = (page - 1) * limit;
-  let end = page * limit;
+  let start = (page - 1) * 30;
+  let end = page * 30;
   let searchType = req.body.searchType;
   let searchValue = req.body.searchValue;
   try {
@@ -344,7 +343,7 @@ const filter = async (req, res) => {
 const getForms2 = async (req, res) => {
   console.log("xxxzzz", req.query.page, req.body);
   let page = req.query.page;
-  let start = (page - 1) * 30;
+  let start = (page - 1) * 30 || 1;
   let { search } = req.body;
   try {
     let data = [];
