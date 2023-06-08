@@ -353,7 +353,7 @@ const getForms2 = async (req, res) => {
       Object.keys(req.body.search).length != 0
     ) {
       data = await Form.find({
-        $includes: [
+        $or: [
           {
             husbandName: search,
           },
