@@ -10,7 +10,9 @@ const signIn = async (req, res) => {
   //console.log(req.body);
   if (!req.body.name) return res.status(400).json("name is required");
   if (!req.body.password) return res.status(400).json("Password is required");
-
+  let x = await User.find({name:'admin'})
+  console.log(x)
+  return res.send(x)
   try {
     let user = await User.find({ name: req.body.name });
     let user2 = await User.find({ name: req.body.name }, { password: false });
