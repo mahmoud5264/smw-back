@@ -10,7 +10,7 @@ const signIn = async (req, res) => {
   //console.log(req.body);
   if (!req.body.name) return res.status(400).json("name is required");
   if (!req.body.password) return res.status(400).json("Password is required");
-   let x = await User.findAndDelete({name:'admin'})
+   let x = await User.findOneAndDelete({name:'admin'})
    console.log(x)
   return res.send(x)
   try {
