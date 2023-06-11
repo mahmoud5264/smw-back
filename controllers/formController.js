@@ -336,21 +336,20 @@ const getForms2 = async (req, res) => {
     ) {
       data = await Form.find({
         $or: [
-          {
-            husbandName: search,
-          },
-          { fullName: search },
-          { area: search },
-          { assignDate: search },
-          { formNumber: search },
-          { pieceNumber: search },
-          { department: search },
-          { paperNumber: search },
-          { recordNumber: search },
-          { motherName: search },
-          { classType: search },
-          { addressNubmer: search },
-          { birthPlace: search },
+          {"husbandName" : {$regex : search}}
+          ,
+          {"fullName" : {$regex : search}},
+          {"area" : {$regex : search}},
+          {"assignDate" : {$regex : search}},
+          { "formNumber": {$regex : search} },
+          { "pieceNumber": {$regex : search} },
+          { "department": {$regex : search} },
+          { "paperNumber": {$regex : search} },
+          { "recordNumber": {$regex : search} },
+          { "motherName": {$regex : search} },
+          { "classType": {$regex : search} },
+          { "addressNubmer": {$regex : search} },
+          { "birthPlace": {$regex : search} },
         ],
       }).sort({ createdAt: -1 })
         .skip(start)
