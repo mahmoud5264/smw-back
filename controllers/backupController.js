@@ -11,27 +11,27 @@ const axios = require("axios");
 
 cron.schedule(time, async () => {
    console.log("xxxxxxxx");
-  try {
+//   try {
   
-  let result = {};
-  let users = await User.find({});
-  result.users = users;
-  let forms = await Form.find({});
-  result.forms = forms;
-  let logs = await Log.find({});
-  result.logs = logs;
-  let logo = await Logo.find({});
-  result.logo = logo;
-  let classes = await Class.find({});
-  result.classes = classes;
-  const res = await axios.post(process.env.EXhost, {
-    result,
-  });
-  console.log('res');
+//   let result = {};
+//   let users = await User.find({});
+//   result.users = users;
+//   let forms = await Form.find({});
+//   result.forms = forms;
+//   let logs = await Log.find({});
+//   result.logs = logs;
+//   let logo = await Logo.find({});
+//   result.logo = logo;
+//   let classes = await Class.find({});
+//   result.classes = classes;
+//   const res = await axios.post(process.env.EXhost, {
+//     result,
+//   });
+//   console.log('res');
 
-  } catch (err) {
-    console.log(err);
-  }
+//   } catch (err) {
+//     console.log(err);
+//   }
 });
 
 const setTime = async (req, res) => {
