@@ -17,7 +17,7 @@ const editForm = async (req, res) => {
       if (!form) return res.status(400).json("there is no such form");
 
       let test = await Form.findByIdAndUpdate(req.params.id, {
-        assignDate: req.body.data || form.date,
+        assignDate: req.body.assignDate || form.assignDate,
         area: req.body.area || form.area,
         pieceNumber: req.body.pieceNumber || form.pieceNumber,
         addressNubmer: req.body.addressNubmer || form.addressNubmer,
