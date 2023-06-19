@@ -267,8 +267,9 @@ const getMyForms = async (req, res) => {
   console.log(String(req.params.id));
   try {
     const forms = await Form.find({_id:req.params.id});
-    return res.status(200).json(forms);
     console.log(forms)
+    return res.status(200).json(forms);
+    
   } catch (error) {
     console.log('errx', error);
     return res.status(400).json(error);
