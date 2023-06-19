@@ -266,7 +266,7 @@ const deleteForm = async (req, res) => {
 const getMyForms = async (req, res) => {
   console.log(String(req.params.id));
   try {
-    const forms = await Form.find({_id:req.params.id});
+    const forms = await Form.findById(req.params.id);
     console.log(forms)
     return res.status(200).json(forms);
     
