@@ -220,7 +220,7 @@ const createForm = async (req, res) => {
 };
 
 const getForms = async (req, res) => {
-  console.log(req.query.page);
+  console.log(req.query.page,'kkkkkkkkkk');
   let page = req.query.page;
   //   let limit = req.query.limit ;
   let start = (page - 1) * 30;
