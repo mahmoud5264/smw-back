@@ -15,9 +15,9 @@ app.use(cors({
   "Access-Control-Allow-Origin":"*"
 }));
 app.use(express.json());
-const conect = async () => {
-  await mongoose.connect("mongodb+srv://actional79:azsbzxe5F1zr0tTG@cluster0.su8lkhz.mongodb.net/");
-};
+// const conect = async () => {
+//   await mongoose.connect("mongodb+srv://actional79:azsbzxe5F1zr0tTG@cluster0.su8lkhz.mongodb.net/");
+// };
 /*
 server {
   listen 80;
