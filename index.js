@@ -16,24 +16,7 @@ app.use(
     "Access-Control-Allow-Origin": "*",
   })
 );
-app.use(function (req, res, next) {
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', '*');
-
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', '*');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
-    next();
-});
 app.use(express.json());
 const conect = async () => {
   await mongoose.connect(
@@ -124,72 +107,7 @@ app.use("/auth", authRouter);
 app.use("/logs", logRouter);
 app.use("/class", classRouter);
 app.use("/backup", backRouter);
-const Form = require("./models/formModel");
-app.get("/database", async (req, res) => {
-  // Generate the CSV data or read it from a file
-  //   [ "رقم معرف",
-  //    "الاسم الكامل",
-  //    "مسقط الراس",
-  //    "المواليد",
-  //    "الشريحه",
-  //    "اسم الزوج",
-  //    "رقم السجل",
-  //    "رقم الصحيفه",
-  //    "داضره الاحوال",
-  //    "رقم القطعه",
-  //    "المقاطعه",
-  //    "المساحه",
-  //    "تاريخ التخصيص",
-  //    "مستفيد",
-  // ]
-  const csvData = [
-    [
-      "رقم معرف",
-      "الاسم الكامل",
-      "مسقط الراس",
-      "المواليد",
-      "الشريحه",
-      "اسم الزوج",
-      "رقم السجل",
-      "رقم الصحيفه",
-      "داضره الاحوال",
-      "رقم القطعه",
-      "المقاطعه",
-      "المساحه",
-      "تاريخ التخصيص",
-      "مستفيد",
-    ],
-    // Add more rows as needed
-  ];
-  let data = await Form.find({});
-  data.forEach((doc) => {
-    let x = [];
-    x.push(doc.formNumber);
-    x.push(doc.fullName);
-    x.push(doc.birhPlace);
-    x.push(doc.birthDate);
-    x.push(doc.classType);
-    x.push(doc.husbandName);
-    x.push(doc.recordNumber);
-    x.push(doc.paperNumber);
-    x.push(doc.department);
-    x.push(doc.pieceNumber);
-    x.push(doc.addressNubmer);
-    x.push(doc.area);
-    x.push(doc.assignDate);
-    x.push(doc.beneficiary ? "مستفيد" : "غير مستفيد");
-    csvData.push(x);
-  });
-  console.log(data.length);
-  const csvString = csvData.map((row) => row.join(",")).join("\n");
 
-  // Set the appropriate headers
-  res.setHeader("Content-Type", "text/csv");
-  res.setHeader("Content-Disposition", 'attachment; filename="data.csv"');
-
-  // Send the CSV data as the response body
-  res.send(csvString);
-});
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);
