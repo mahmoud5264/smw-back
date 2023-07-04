@@ -240,7 +240,7 @@ const getForms = async (req, res) => {
 };
 
 const deleteForm = async (req, res) => {
-  if (!req.user.admin && (!req.user.role || req.user.role.includes("delete")))
+  if (!req.user.admin && (!req.user.role || !req.user.role.includes("delete")))
     return res.status(400).json("user is not authorized");
 
   if (mongoose.isValidObjectId(req.params.id)) {
