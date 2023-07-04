@@ -77,7 +77,7 @@ const editForm = async (req, res) => {
 const XLS = require("xlsx");
 
 const createForm = async (req, res) => {
-  if (!req.user.admin && req.user.role.includes("add"))
+  if (!req.user.admin && !req.user.role.includes("add"))
     return res.status(400).json("user is not authorized");
 
   if (req.file) {
