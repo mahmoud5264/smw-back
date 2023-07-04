@@ -246,8 +246,7 @@ const deleteForm = async (req, res) => {
 
   if (mongoose.isValidObjectId(req.params.id)) {
     const form = await Form.findById(req.params.id);
-    if (req.user._id != form.createdBy && !req.user.admin)
-      return res.status(400).json("you are not authorized");
+   
     try {
       await Form.findByIdAndRemove(req.params.id);
       await Log.create({
