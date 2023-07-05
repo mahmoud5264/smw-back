@@ -147,7 +147,8 @@ const createForm = async (req, res) => {
   } = req.body;
   // if (!req.body.fullName && !req.file)
   //   return res.status(400).json("data is not completed");
-  // console.log(req.body, req.file.path);
+   console.log(note);
+  
 
   try {
     let size = await Form.find({}).sort({ createdAt: -1 }).limit(1);
