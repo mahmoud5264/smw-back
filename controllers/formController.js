@@ -111,6 +111,7 @@ const createForm = async (req, res) => {
           tmp.assignDate = res["تاريخ التخصيص"];
           tmp.beneficiary = true;
           tmp.formNumber = res["رقم معرف"];
+          tmp.note = res["الملاحظه"];
           data.push(tmp);
         });
       }
@@ -142,6 +143,7 @@ const createForm = async (req, res) => {
     birthPlace,
     fullName,
     beneficiary,
+    note
   } = req.body;
   // if (!req.body.fullName && !req.file)
   //   return res.status(400).json("data is not completed");
@@ -192,6 +194,7 @@ const createForm = async (req, res) => {
       formNumber:  size.length?size[0].formNumber * 1 + 1 : 1 ,
       beneficiary: req.body.b ? false : true,
       createdBy: req.user.fullName,
+      note
     });
     if (!req.file) {
       Log.create({
