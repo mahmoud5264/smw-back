@@ -18,7 +18,7 @@ const formSchema = mongoose.Schema(
     file:{ type: String, default: null },
     beneficiary: { type: Boolean, default: false, trim: true },
     createdBy: {type: String, default: null },
-    area: { type: String, default: "", trim: true },
+    note: { type: String, default: "", trim: true },
   },
   { timestamps: true }
 );
