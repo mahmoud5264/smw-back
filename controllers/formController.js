@@ -31,8 +31,9 @@ const editForm = async (req, res) => {
         birthPlace: req.body.birthPlace || form.birthPlace,
         fullName: req.body.fullName || form.fullName,
         beneficiary: req.body.beneficiary || form.beneficiary,
+        note: req.body.note || form.note,
       });
-      console.log("re", test);
+      // console.log("re", test);
       if (req.body.department) {
         const temp = await Class.findOne({
           name: req.body.department,
