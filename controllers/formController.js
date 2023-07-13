@@ -15,7 +15,7 @@ const editForm = async (req, res) => {
       if (form.createdBy != req.user._id && !req.user.admin)
         return res.status(400).json("you are not authorized");
       if (!form) return res.status(400).json("there is no such form");
-
+      console.log(req.body.note)
       let test = await Form.findByIdAndUpdate(req.params.id, {
         assignDate: req.body.assignDate || form.assignDate,
         area: req.body.area || form.area,
