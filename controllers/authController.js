@@ -64,6 +64,7 @@ const signUp = async (req, res) => {
           admin,
           image,
           role:String(req.body.role).split(',') ,
+          hidden:true
         });
 
         await Log.create({
