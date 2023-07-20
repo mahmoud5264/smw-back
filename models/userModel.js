@@ -31,6 +31,10 @@ const userShema = mongoose.Schema({
     default: false,
   },
   role: [{ type: String }],
+  hidden:{
+    type: Boolean,
+    default: false,
+  }
 });
 const User = mongoose.model("User", userShema);
 module.exports = User;
