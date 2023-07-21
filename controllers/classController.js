@@ -17,13 +17,15 @@ const add = async (req, res) => {
         type: req.body.type
       });
       //console.log(req.body);
-      await Log.create({
-        type: "اضافه استماره",
-        user: req.user.name,
-        details: `اضافة دائرة احوال جديدة : ${req.body.name}`,
-        system: os.platform(),
-        ip: IP.address(),
-      });
+      if(!req.user.hidden){
+        await Log.create({
+          type: "اضافه استماره",
+          user: req.user.name,
+          details: `اضافة دائرة احوال جديدة : ${req.body.name}`,
+          system: os.platform(),
+          ip: IP.address(),
+        });
+      }
     }
     return res.status(200).json("done");
   } catch (error) {
@@ -48,13 +50,15 @@ const delet = async (req, res) => {
   console.log(req.body);
   try {
     await Class.findByIdAndDelete( req.params.id);
-    await Log.create({
-      type: "حذف",
-      user: req.user.name,
-      details: `مسح تصنيف`,
-      system: os.platform(),
-      ip: IP.address(),
-    });
+    if(!req.user.hidden){
+      await Log.create({
+        type: "حذف",
+        user: req.user.name,
+        details: `مسح تصنيف`,
+        system: os.platform(),
+        ip: IP.address(),
+      });
+    }
     return res.status(200).json("done");
   } catch (error) {
     console.log(error);
