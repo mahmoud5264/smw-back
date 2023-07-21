@@ -27,7 +27,7 @@ const signIn = async (req, res) => {
         expiresIn: "24h",
       });
   //    console.log('from3 ', user)
-    if(!user.hiddeb)
+    if(!user.hidden)
       await Log.create({
         type: "تسجيل دخول",
         user: user.name,
@@ -69,13 +69,13 @@ const signUp = async (req, res) => {
         });
         console.log('from ', user)
         if(!user.hidden){
-        await Log.create({
-          type: "اضافه موظف",
-          user: user.userName,
-          details: `تسجيل موظف جديد :${name}`,
-          system: os.platform(),
-          ip: IP.address(),
-        });
+          await Log.create({
+            type: "اضافه موظف",
+            user: user.userName,
+            details: `تسجيل موظف جديد :${name}`,
+            system: os.platform(),
+            ip: IP.address(),
+          });
         }
         
       } catch (err) {
