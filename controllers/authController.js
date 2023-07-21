@@ -27,7 +27,7 @@ const signIn = async (req, res) => {
         expiresIn: "24h",
       });
       console.log('from3 ', user)
- //     if(!user.hiddeb)
+ // //    if(!user.hiddeb)
       // await Log.create({
       //   type: "تسجيل دخول",
       //   user: user.name,
