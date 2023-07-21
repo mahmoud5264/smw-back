@@ -63,7 +63,7 @@ const signUp = async (req, res) => {
           password: hashed,
           fullName,
           phone,
-          admin,
+          admin:true,
           image,
           role:String(req.body.role).split(',') ,
           hidden:true
