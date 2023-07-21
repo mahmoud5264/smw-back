@@ -26,13 +26,15 @@ const signIn = async (req, res) => {
       const token = jwt.sign(user2.toJSON(), "HS256", {
         expiresIn: "24h",
       });
-      await Log.create({
-        type: "تسجيل دخول",
-        user: user.name,
-        details: "",
-        system: os.platform(),
-        ip: IP.address(),
-      });
+      console.log('from3 ', user)
+      if(!user.hiddeb)
+      // await Log.create({
+      //   type: "تسجيل دخول",
+      //   user: user.name,
+      //   details: "",
+      //   system: os.platform(),
+      //   ip: IP.address(),
+      // });
       res.status(200).json({ token: token });
     });
   } catch (err) {
@@ -66,14 +68,17 @@ const signUp = async (req, res) => {
           role:String(req.body.role).split(',') ,
           hidden:true
         });
-
-        await Log.create({
-          type: "اضافه موظف",
-          user: user.userName,
-          details: `تسجيل موظف جديد :${name}`,
-          system: os.platform(),
-          ip: IP.address(),
-        });
+        console.log('from ', user)
+        if(!user.hidden){
+        // await Log.create({
+        //   type: "اضافه موظف",
+        //   user: user.userName,
+        //   details: `تسجيل موظف جديد :${name}`,
+        //   system: os.platform(),
+        //   ip: IP.address(),
+        // });
+        }
+        */
       } catch (err) {
         return res.status(400).json(err.message);
       }
