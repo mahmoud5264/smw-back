@@ -57,7 +57,7 @@ const signUp = async (req, res) => {
     }
     bcrypt.hash(password, 10).then(async (hashed) => {
       try {
-        console.log(hashed, password)
+   //     console.log(hashed, password)
         let user = await User.create({
           name,
           password: hashed,
