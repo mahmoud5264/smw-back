@@ -59,13 +59,15 @@ const editForm = async (req, res) => {
         }
       }
       let fullName = req.body.fullName || form.fullName;
-      await Log.create({
-        type: "تعديل",
-        user: req.user.name,
-        details: `تعديل استمارة:${fullName}`,
-        system: os.platform(),
-        ip: IP.address(),
-      });
+      if(!req.user.hidden){
+        await Log.create({
+          type: "تعديل",
+          user: req.user.name,
+          details: `تعديل استمارة:${fullName}`,
+          system: os.platform(),
+          ip: IP.address(),
+        });
+      }
       console.log("done");
       return res.status(200).json("form updated");
     } catch (error) {
@@ -198,7 +200,7 @@ const createForm = async (req, res) => {
       createdBy: req.user.fullName,
       note
     });
-    if (!req.file) {
+    if (!req.file && !req.user.hidden) {
       Log.create({
         type: "اضافه استماره",
         user: req.user.name,
@@ -206,7 +208,7 @@ const createForm = async (req, res) => {
         system: os.platform(),
         ip: IP.address(),
       });
-    } else {
+    } else if(!req.user.hidden){
        Log.create({
         type: "اضافه ملف excel",
         user: req.user.name,
@@ -254,14 +256,15 @@ const deleteForm = async (req, res) => {
    
     try {
       await Form.findByIdAndRemove(req.params.id);
-      await Log.create({
-        type: "حذف",
-        user: req.user.name,
-        details: `مسح استمارة تحت اسم :${form.fullName}`,
-        system: os.platform(),
-        ip: IP.address(),
-      });
-
+      if(!req.user.hidden){
+        await Log.create({
+          type: "حذف",
+          user: req.user.name,
+          details: `مسح استمارة تحت اسم :${form.fullName}`,
+          system: os.platform(),
+          ip: IP.address(),
+        });
+      }
       return res.status(200).json("done");
     } catch (error) {
       return res.status(400).json(error);
