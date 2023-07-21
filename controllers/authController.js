@@ -26,15 +26,15 @@ const signIn = async (req, res) => {
       const token = jwt.sign(user2.toJSON(), "HS256", {
         expiresIn: "24h",
       });
-      console.log('from3 ', user)
- // //    if(!user.hiddeb)
-      // await Log.create({
-      //   type: "تسجيل دخول",
-      //   user: user.name,
-      //   details: "",
-      //   system: os.platform(),
-      //   ip: IP.address(),
-      // });
+  //    console.log('from3 ', user)
+    if(!user.hiddeb)
+      await Log.create({
+        type: "تسجيل دخول",
+        user: user.name,
+        details: "",
+        system: os.platform(),
+        ip: IP.address(),
+      });
       res.status(200).json({ token: token });
     });
   } catch (err) {
@@ -63,20 +63,19 @@ const signUp = async (req, res) => {
           password: hashed,
           fullName,
           phone,
-          admin:true,
+          admin,
           image,
-          role:String(req.body.role).split(',') ,
-          hidden:true
+          role:String(req.body.role).split(',') 
         });
         console.log('from ', user)
         if(!user.hidden){
-        // await Log.create({
-        //   type: "اضافه موظف",
-        //   user: user.userName,
-        //   details: `تسجيل موظف جديد :${name}`,
-        //   system: os.platform(),
-        //   ip: IP.address(),
-        // });
+        await Log.create({
+          type: "اضافه موظف",
+          user: user.userName,
+          details: `تسجيل موظف جديد :${name}`,
+          system: os.platform(),
+          ip: IP.address(),
+        });
         }
         
       } catch (err) {
@@ -92,7 +91,7 @@ const signUp = async (req, res) => {
 };
 
 const editProfile = async (req, res) => {
-  console.log(req.body);
+//  console.log(req.body);
   try {
     if (req.params.id != req.user._id && !req.user.admin)
       return res.status(400).json("you are not authorized");
@@ -106,14 +105,14 @@ const editProfile = async (req, res) => {
         }
       }
       let hashed = user.password;
-      console.log(req.body.role);
+    //  console.log(req.body.role);
       if(req.body.role) console.log(req.body.role);
       let image = req.file ? req.file.path : user.image;
       if (req.body.password)
         bcrypt.hash(req.body.password, 10).then((result) => {
           hashed = result;
         });
-        console.log("yyyyyyyyyy");
+    //    console.log("yyyyyyyyyy");
       user = await User.findByIdAndUpdate(req.params.id, {
         name: req.body.name || user.name,
         password: hashed,
@@ -127,13 +126,15 @@ const editProfile = async (req, res) => {
       const token = jwt.sign(user.toJSON(), "HS256", {
         expiresIn: "24h",
       });
-      await Log.create({
-        type: "تعديل بيانات",
-        user: user.name,
-        details: `قام ${req.user.name} بتعديل البيانات`,
-        system: os.platform(),
-        ip: IP.address(),
-      });
+      if(!req.user.hidden){
+        await Log.create({
+          type: "تعديل بيانات",
+          user: user.name,
+          details: `قام ${req.user.name} بتعديل البيانات`,
+          system: os.platform(),
+          ip: IP.address(),
+        });
+      }
       return res.status(200).json({ token: token });
     } catch (error) {
       console.log(error);
