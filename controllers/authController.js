@@ -206,8 +206,8 @@ const getLogo = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   // console.log(req.user);
-  // if (!req.user.admin && !req.user.role.includes("setting"))
-  //   return res.status(400).json("not authorized");
+   if (!req.user.admin && !req.user.role.includes("setting"))
+     return res.status(400).json("not authorized");
   try {
     await User.findByIdAndDelete(req.params.id)
     return res.status(200).json('deleted')
