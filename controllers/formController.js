@@ -248,10 +248,10 @@ const getForms = async (req, res) => {
 
 const deleteForm = async (req, res) => {
   // console.log(req.user.role.includes("delete"))
-  // if (!req.user.admin &&  !req.user.role.includes("delete"))
-  //   return res.status(400).json("user is not authorized");
+  if (!req.user.admin &&  !req.user.role.includes("delete"))
+    return res.status(400).json("user is not authorized");
 
-  /*if (mongoose.isValidObjectId(req.params.id)) {
+  if (mongoose.isValidObjectId(req.params.id)) {
     const form = await Form.findById(req.params.id);
    
     try {
@@ -272,13 +272,7 @@ const deleteForm = async (req, res) => {
   } else {
     return res.status(400).json("id is not valid");
   }
-  */
-  try{
-  await Form.deleteMany({});
-    return res.status(200).json('tmm')
-  }catch (err){
-    return res.status(400).json(err)
-  }
+
 };
 
 const getMyForms = async (req, res) => {
