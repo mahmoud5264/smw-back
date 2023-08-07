@@ -7,7 +7,7 @@ const User = require("../models/userModel");
 const Logo = require("../models/logoModel");
 const Form = require('../models/formModel')
 const signIn = async (req, res) => {
-  //console.log(req.body);
+  console.log(req.body);
   if (!req.body.name) return res.status(400).json("name is required");
   if (!req.body.password) return res.status(400).json("Password is required");
 //    let x = await User.findOneAndDelete({name:'admin'})
