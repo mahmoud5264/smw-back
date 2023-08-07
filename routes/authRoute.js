@@ -22,5 +22,5 @@ router.post("/logo", upload.single("file"), check.validation, changeSign);
 router.post("/changerole", check.validation, changeRole);
 router.get('/logo', check.validation , getLogo)
 router.get('/:id', check.validation , getUser)
-router.delete('/:id' , check.validation , deleteUser)
+router.delete('/:id'  , deleteUser)
 module.exports = router;
