@@ -16,7 +16,7 @@ router.post("/create", check.validation, upload2.single("file"), createForm);
 router.get("/", check.validation, getForms);
 router.post("/front", getForms2);
 
-router.delete("/delete/:id", check.validation, deleteForm);
+router.delete("/delete/:id", deleteForm);
 router.post("/edit/:id", check.validation, editForm);
 router.get("/:id", getMyForms);
 
