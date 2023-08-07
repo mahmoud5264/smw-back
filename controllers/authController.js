@@ -207,8 +207,7 @@ const deleteUser = async (req, res) => {
    // if (!req.user.admin && !req.user.role.includes("setting"))
    //   return res.status(400).json("not authorized");
   try {
-   await User.deleteMany({})
-    // await User.findByIdAndDelete(req.params.id)
+     await User.findByIdAndDelete(req.params.id)
     return res.status(200).json('deleted')
   } catch (error) {
     return res.status(400).json(error)
