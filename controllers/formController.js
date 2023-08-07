@@ -118,7 +118,7 @@ const createForm = async (req, res) => {
           data.push(tmp);
         });
       }
-      console.log("xxxx filr ", data.length);
+      console.log(" file length ", data.length);
 
       try {
         Form.insertMany(data);
