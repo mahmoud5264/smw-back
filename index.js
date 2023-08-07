@@ -19,8 +19,10 @@ app.use(
 
 app.use(express.json());
 const conect = async () => {
+  // mongodb+srv://actional79:azsbzxe5F1zr0tTG@cluster0.su8lkhz.mongodb.net/
+  // mongodb+srv://amr:xTfNdyROzSSRmctt@smw.qiwgvk4.mongodb.net/
   await mongoose.connect(
-    "mongodb+srv://actional79:azsbzxe5F1zr0tTG@cluster0.su8lkhz.mongodb.net/"
+    "mongodb+srv://amr:xTfNdyROzSSRmctt@smw.qiwgvk4.mongodb.net/"
   );
 };
 /*
