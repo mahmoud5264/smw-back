@@ -96,7 +96,7 @@ server {
 
 */
 conect();
-// console.log(process.env.URL);
+//  console.log(process.env.URL);
 const formRouter = require("./routes/formRoute");
 const authRouter = require("./routes/authRoute");
 const logRouter = require("./routes/logRoute");
