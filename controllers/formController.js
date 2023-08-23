@@ -233,7 +233,7 @@ const getForms = async (req, res) => {
   let start = (page - 1) * 30;
   let end = page * 30;
   try {
-    let data = await Form.find({}).sort({ createdAt: -1 }).skip(start).limit(end);
+    let data = await Form.find({}).sort({ createdAt: -1 }).skip(start).limit(30);
     if(!page){
       data = await Form.find({});
     }
@@ -304,7 +304,7 @@ const getNumberOfForms = async (req, res) => {
 const filter = async (req, res) => {
   let page = req.query.page || 1;
   let start = (page - 1) * 30;
-  let end = page * 30;
+  let end = 30;
   let searchType = req.body.searchType;
   let searchValue = req.body.searchValue;
   try {
