@@ -247,7 +247,7 @@ const getForms = async (req, res) => {
 };
 
 const deleteForm = async (req, res) => {
-  // console.log(req.user.role.includes("delete"))
+   console.log(req.user)
   if (!req.user.admin &&  !req.user.role.includes("delete"))
     return res.status(400).json("user is not authorized");
 
