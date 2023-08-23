@@ -18,10 +18,12 @@ app.use(express.json());
 const conect = async () => {
   // mongodb+srv://actional79:azsbzxe5F1zr0tTG@cluster0.su8lkhz.mongodb.net/
   // mongodb+srv://amrmohamed09:85v39HBvrVMrHvXC@cluster0.mjasn1l.mongodb.net/
+  //mongodb://admin:5iiNXAlzWvb8ulQF@SG-smw-59213.servers.mongodirector.com:27017/admin?ssl=true
+  //mongodb+srv://amr:DwTW8OYiVwz8Dzqf@cluster0.msxeqdq.mongodb.net/
   await mongoose.connect(
-    "mongodb://admin:5iiNXAlzWvb8ulQF@SG-smw-59213.servers.mongodirector.com:27017/admin?ssl=true",{
-  ssl: true,
-  sslValidate: false
+    "mongodb+srv://amr:DwTW8OYiVwz8Dzqf@cluster0.msxeqdq.mongodb.net/",{
+//  ssl: true,
+//  sslValidate: false
 }
   );
 };
