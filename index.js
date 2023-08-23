@@ -21,7 +21,7 @@ const conect = async () => {
   //mongodb://admin:5iiNXAlzWvb8ulQF@SG-smw-59213.servers.mongodirector.com:27017/admin?ssl=true
   //mongodb+srv://amr:DwTW8OYiVwz8Dzqf@cluster0.msxeqdq.mongodb.net/
   await mongoose.connect(
-    "mongodb+srv://amr:WK25oOdBWeeRlDBg@cluster0.msxeqdq.mongodb.net/",{
+    "mongodb+srv://amr:WK25oOdBWeeRlDBg@cluster0.gk4tvrh.mongodb.net/",{
 //  ssl: true,
 //  sslValidate: false
 }
