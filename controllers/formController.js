@@ -237,7 +237,7 @@ const getForms = async (req, res) => {
     if(!page){
       data = await Form.find({});
     }
-    return res.status(200).json({ len: data[0].formNumber, data: data });
+    return res.status(200).json({ len: data[0]?data[0].formNumber:1, data: data });
 
     return res.status(200).json(data);
   } catch (error) {
