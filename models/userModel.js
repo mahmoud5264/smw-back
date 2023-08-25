@@ -34,6 +34,10 @@ const userShema = mongoose.Schema({
   hidden:{
     type: Boolean,
     default: false,
+  },
+  jobTittle:{
+    type:String,
+    default: '',
   }
 });
 const User = mongoose.model("User", userShema);
