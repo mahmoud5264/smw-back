@@ -119,6 +119,7 @@ const editProfile = async (req, res) => {
         admin: req.body.admin || user.admin,
         image: image,
         role:  String(req.body.role).split(',')  ,
+        jobTittle:req.body.jobTittle || user.jobTittle,
       });
       user = await User.findById(req.params.id);
       const token = jwt.sign(user.toJSON(), "HS256", {
@@ -157,7 +158,7 @@ const changeSign = async (req, res) => {
   //console.log( req.file);
  // if (!req.user.admin || !req.file)
   //  return res.status(400).json("you are not authorized");
-   console.log( 'xxxxx' );
+   // console.log( 'xxxxx' );
   try {
     await Logo.deleteMany({});
     await Logo.create({
