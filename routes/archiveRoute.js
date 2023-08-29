@@ -7,5 +7,4 @@ router.post('/add',upload.single("file"), check.validation, add)
 router.post('/search',check.validation, search)
 router.get('/get', check.validation , get)
 router.get('/getAll', check.validation , getAll)
-// export
 module.exports = router
