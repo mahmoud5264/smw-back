@@ -16,15 +16,12 @@ app.use(
 
 app.use(express.json());
 const conect = async () => {
-  // mongodb+srv://actional79:azsbzxe5F1zr0tTG@cluster0.su8lkhz.mongodb.net/
-  // mongodb+srv://amrmohamed09:85v39HBvrVMrHvXC@cluster0.mjasn1l.mongodb.net/
-  //mongodb://admin:5iiNXAlzWvb8ulQF@SG-smw-59213.servers.mongodirector.com:27017/admin?ssl=true
-  //mongodb+srv://amr:DwTW8OYiVwz8Dzqf@cluster0.msxeqdq.mongodb.net/
   await mongoose.connect(
-    "mongodb://admin:5iiNXAlzWvb8ulQF@SG-smw-59213.servers.mongodirector.com:27017/admin?ssl=true",{
-    ssl: true,
-    sslValidate: false
-}
+    "mongodb://admin:5iiNXAlzWvb8ulQF@SG-smw-59213.servers.mongodirector.com:27017/admin?ssl=true",
+    {
+      ssl: true,
+      sslValidate: false,
+    }
   );
 };
 /*
@@ -104,6 +101,7 @@ const authRouter = require("./routes/authRoute");
 const logRouter = require("./routes/logRoute");
 const classRouter = require("./routes/classRoute");
 const backRouter = require("./routes/backupRoute");
+const archiveRouter = require("./routes/archiveRoute");
 
 // hostnamectl set-hostname smwback
 app.use("/form", formRouter);
@@ -111,7 +109,7 @@ app.use("/auth", authRouter);
 app.use("/logs", logRouter);
 app.use("/class", classRouter);
 app.use("/backup", backRouter);
-
+app.use("/archive", archiveRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);
