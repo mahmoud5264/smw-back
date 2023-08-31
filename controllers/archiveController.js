@@ -13,6 +13,7 @@ const add = async (req, res) => {
       number,
       bookNumber,
       date,
+      date2,
       user: req.user,
     });
     console.log(temp);
