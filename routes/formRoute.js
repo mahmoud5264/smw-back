@@ -10,6 +10,7 @@ const {
   getNumberOfForms,
   filter,
   getForms2,
+  editPrintNumber
 } = require("../controllers/formController");
 const Form = require("../models/formModel");
 router.post("/create", check.validation, upload2.single("file"), createForm);
@@ -21,5 +22,7 @@ router.post("/edit/:id", check.validation, editForm);
 router.get("/:id", getMyForms);
 
 router.post("/filter", check.validation, filter);
+router.post("/editPrint", check.validation, editPrintNumber);
+
 
 module.exports = router;
