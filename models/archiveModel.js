@@ -6,6 +6,7 @@ const archiveSchema = mongoose.Schema(
       number: { type: String, trim: true },
       bookNumber: { type: String, trim: true },
       date: { type: String, trim: true },
+      date2: { type: String, trim: true },
       user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     },
     { timestamps: true }
