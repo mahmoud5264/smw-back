@@ -386,7 +386,7 @@ const editPrintNumber = async(req,res)=>{
   console.log(req.body)
   if(!req.body.id || !req.body.number ) return  res.status(400).json("id is not valid");
   try{
-    let data = await Form.findByIdAndUpdate(req.body.id,{number:req.body.number+1});
+    let data = await Form.findByIdAndUpdate(req.body.id,{number:req.body.number});
     return res.status(200).json(data)
   }
   catch(e){
