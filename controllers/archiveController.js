@@ -44,6 +44,18 @@ const get = async (req, res) => {
   let data = await Archive.findById(req.query.id).populate('user');
   return res.status(200).json(data);
 };
+
+const deleteArchive = async (req, res) => {
+  const { id } = req.query.id;
+  if(!req.query.id) return res.status(400).json('رجاء ادخال الرفم التعريفي')
+  try{
+    let data = await Archive.findByIdAndDelete(req.query.id);
+    return res.status(200).json(data);
+  }catch(e){
+    return res.status(400).json(e)
+  }
+};
+
 const getAll = async (req, res) => {
   const page = req.query.page ? req.query.page * 1 : 1;
   let data = await Archive.find({})
@@ -52,4 +64,4 @@ const getAll = async (req, res) => {
   return res.status(200).json(data);
 };
 
-module.exports = { add, search, get, getAll };
+module.exports = { add, search, get, getAll, deleteArchive };
