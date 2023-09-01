@@ -47,6 +47,7 @@ const get = async (req, res) => {
 
 const deleteArchive = async (req, res) => {
   const { id } = req.query.id;
+  console.log(id)
   if(!req.query.id) return res.status(400).json('رجاء ادخال الرفم التعريفي')
   try{
     let data = await Archive.findByIdAndDelete(req.query.id);
