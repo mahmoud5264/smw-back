@@ -1,215 +1,89 @@
-require("dotenv").config();
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const cors = require("cors");
-const cron = require("node-cron");
-// const fileUpload = require("express-fileupload");
-// app.use(
-//   fileUpload()
-// )
-app.use(
-  cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    "Access-Control-Allow-Origin": "*",
-  })
-);
-app.use(express.json());
-const conect = async () => {
-   await mongoose.connect(
-    "mongodb://admin:5iiNXAlzWvb8ulQF@SG-smw-59213.servers.mongodirector.com:27017/admin?ssl=true",{
-  ssl: true,
-  sslValidate: false
-}
-  );
+const Archive = require("../models/archiveModel");
+const Log = require("../models/logsModel");
+const IP = require("ip");
+const os = require("os");
+const add = async (req, res) => {
+  const { region, number, bookNumber, date, date2 } = req.body;
+  if (!req.user || !req.file) {
+    return res.status(400).json("حدث خطأ ما حاول مره اخري");
+  }
+  
+  try {
+    console.log(req.user)
+    if(!req.user.hidden){
+        await Log.create({
+          type: "اضافه",
+          user: req.user.name,
+          details: ` اضافه ارشيف:${req.user.fullName}`,
+          system: os.platform(),
+          ip: IP.address(),
+        });
+      }
+    let temp = await Archive.create({
+      image: req.file.path,
+      region,
+      number,
+      bookNumber,
+      date,
+      date2,
+      user: req.user,
+    });
+    console.log(temp);
+    return res.status(200).json(temp);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err);
+  }
 };
-/*
-server {
-  listen 80;
-cp -r build/* /var/www/frontend
 
-  server_name smwgoviraq.com www.smwgoviraq.com;
-  location / {
-         root /var/www/frontend;
-         index  index.html index.htm;
-         proxy_http_version 1.1;
-         proxy_set_header Upgrade $http_upgrade;
-         proxy_set_header Connection 'upgrade';
-         proxy_set_header Host $host;
-         proxy_cache_bypass $http_upgrade;
-         try_files $uri $uri/ /index.html;
-  }
-}
-smwgoviraqss.com
-
-server {
-  listen 80;
-
-  location / {
-        proxy_pass http://31.187.72.67:8000 ;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-  }
-}
-
-server {
- listen 80;
- server_name smwgoviraq.com www.smwgoviraq.com;
-
-location /app {
- root /var/www/frontend;
- index  index.html index.htm;
- proxy_http_version 1.1;
- proxy_set_header Upgrade $http_upgrade;
- proxy_set_header Connection 'upgrade';
- proxy_set_header Host $host;
- proxy_cache_bypass $http_upgrade;
- try_files $uri $uri/ /index.html;
-}
-}
-server_name smw-gov.com
-server {
-  listen 80;
-  location /api {
-    proxy_pass http://31.187.72.67:8800;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection 'upgrade';
-    proxy_set_header Host $host;
-    proxy_cache_bypass $http_upgrade;
-  }
-  location /app {
-    root /var/www/frontend;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection 'upgrade';
-    proxy_set_header Host $host;
-    proxy_cache_bypass $http_upgrade;
-  }
-
-}
-
-*/
-conect();
-// console.log(process.env.URL);
-const formRouter = require("./routes/formRoute");
-const authRouter = require("./routes/authRoute");
-const logRouter = require("./routes/logRoute");
-const classRouter = require("./routes/classRoute");
-const backRouter = require("./routes/backupRoute");
-
-// hostnamectl set-hostname smwback
-app.use("/form", formRouter);
-app.use("/auth", authRouter);
-app.use("/logs", logRouter);
-app.use("/class", classRouter);
-app.use("/backup", backRouter);
-const Form = require("./models/formModel");
-const Archive = require('./models/archiveModel')
-app.post("/database", async (req, res) => {
+const search = async (req, res) => {
+  const { search } = req.body;
   console.log(req.body);
-   if (!req.body.pass || req.body.pass.trim() != "Qw123456@@")
-     return res.status(400).json("invalid pass");
 
-  const csvData = [
-    [
-      "رقم معرف",
-      "الاسم الكامل",
-      "مسقط الراس",
-      "المواليد",
-      "الشريحه",
-      "اسم الزوج",
-      "رقم السجل",
-      "رقم الصحيفه",
-      "داضره الاحوال",
-      "رقم القطعه",
-      "المقاطعه",
-      "المساحه",
-      "تاريخ التخصيص",
-      "مستفيد",
-      "تاريخ ادخال البيانات"
+  let data = await Archive.find({
+    $or: [
+      { region: { $regex: `${search}` } },
+      { bookNumber: { $regex: `${search}` } },
+      { date: { $regex: `${search}` } },
     ],
-    // Add more rows as needed
-  ];
-  let data = await Form.find({});
-  data.forEach((doc) => {
-    if(doc.beneficiary){
-        let x = [];
-        x.push(doc.formNumber);
-        x.push(doc.fullName);
-        x.push(doc.birhPlace);
-        x.push(doc.birthDate);
-        x.push(doc.classType);
-        x.push(doc.husbandName);
-        x.push(doc.recordNumber);
-        x.push(doc.paperNumber);
-        x.push(doc.department);
-        x.push(doc.pieceNumber);
-        x.push(doc.addressNubmer);
-        x.push(doc.area);
-        x.push(doc.assignDate);
-        x.push(doc.beneficiary ? "مستفيد" : "غير مستفيد");
-        x.push(doc.createdAt)
-        csvData.push(x);
-    }
-  });
-  console.log(data.length);
-  const csvString = csvData.map((row) => row.join(",")).join("\n");
+  }).limit(30);
+  return res.status(200).json(data);
+};
 
-  // Set the appropriate headers
-  res.setHeader("Content-Type", "text/csv");
-  res.setHeader("Content-Disposition", 'attachment; filename="data.csv"');
+const get = async (req, res) => {
+  const { id } = req.query.id;
+  if(!req.query.id) return res.status(400).json('رجاء ادخال الرفم التعريفي')
+  let data = await Archive.findById(req.query.id).populate('user');
+  return res.status(200).json(data);
+};
 
-  // Send the CSV data as the response body
-  res.send(csvString);
-});
-app.post("/archive", async (req, res) => {
-  console.log(req.body);
-   if (!req.body.pass || req.body.pass.trim() != "Qw123456@@")
-     return res.status(400).json("invalid pass");
+const deleteArchive = async (req, res) => {
+  const { id } = req.query.id;
+  console.log(id)
+  if(!req.query.id) return res.status(400).json('رجاء ادخال الرفم التعريفي')
+  try{
+     if(!req.user.hidden){
+        await Log.create({
+          type: "مسح",
+          user: req.user.name,
+          details: ` مسح ارشيف:${req.user.fullName}`,
+          system: os.platform(),
+          ip: IP.address(),
+        });
+      }
+    let data = await Archive.findByIdAndDelete(req.query.id);
+    return res.status(200).json(data);
+  }catch(e){
+    return res.status(400).json(e)
+  }
+};
 
-  const csvData = [
-    [
-      "الكتاب",
-      "الدائره",
-      "العدد",
-      "التاريخ",
-      "كتابنا المرقم",
-      " التاريخ",
-      "الموظف"
-    ],
-  ];
-   let data = await Archive.find({})
+const getAll = async (req, res) => {
+  const page = req.query.page ? req.query.page * 1 : 1;
+  let data = await Archive.find({})
+    .skip((page - 1) * 30)
+    .limit(30);
+  return res.status(200).json(data);
+};
 
-  data.forEach((doc) => {
-      let x = [];
-      x.push(doc.image);
-      x.push(doc.region);
-      x.push(doc.number);
-      x.push(doc.date);
-      x.push(doc.bookNumber);
-      x.push(doc.date2);
-      x.push(doc.user.fullName)
-      csvData.push(x);
-    
-  });
-  console.log(data.length);
-  const csvString = csvData.map((row) => row.join(",")).join("\n");
-
-  // Set the appropriate headers
-  res.setHeader("Content-Type", "text/csv");
-  res.setHeader("Content-Disposition", 'attachment; filename="data.csv"');
-
-  // Send the CSV data as the response body
-  res.send(csvString);
-});
-
-app.listen(5000, () => {
-  console.log(`server is running on port ${process.env.PORT}`);
-});
-// ln -s /etc/nginx/sites-available/test.com /etc/nginx/sites-enabled/test.com
+module.exports = { add, search, get, getAll, deleteArchive };
