@@ -443,5 +443,6 @@ module.exports = {
   getForms2,
   editPrintNumber,
   getMostafidForms,
-  getMshMostafidForms
+  getMshMostafidForms,
+  deleteAll
 };
