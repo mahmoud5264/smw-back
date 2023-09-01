@@ -245,6 +245,44 @@ const getForms = async (req, res) => {
     return res.status(400).json(error);
   }
 };
+const getMostafidForms = async (req, res) => {
+ // console.log(req.query.page,'kkkkkkkkkk');
+  let page = req.query.page;
+  //   let limit = req.query.limit ;
+  let start = (page - 1) * 30;
+  let end = page * 30;
+  try {
+    let data = await Form.find({beneficiary:true}).sort({ createdAt: -1 }).skip(start).limit(30);
+    if(!page){
+      data = await Form.find({});
+    }
+    return res.status(200).json({ len: data[0]?data[0].formNumber:1, data: data });
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+};
+const getMshMostafidForms = async (req, res) => {
+ // console.log(req.query.page,'kkkkkkkkkk');
+  let page = req.query.page;
+  //   let limit = req.query.limit ;
+  let start = (page - 1) * 30;
+  let end = page * 30;
+  try {
+    let data = await Form.find({beneficiary:false}).sort({ createdAt: -1 }).skip(start).limit(30);
+    if(!page){
+      data = await Form.find({});
+    }
+    return res.status(200).json({ len: data[0]?data[0].formNumber:1, data: data });
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+};
 
 const deleteForm = async (req, res) => {
    console.log(req.user)
@@ -321,16 +359,6 @@ const filter = async (req, res) => {
     if (req.body.searchType == "husbandName") {
       filterData = await Form.find( {"husbandName" : {$regex : searchValue}}).sort({createdAt:-1}).skip(start).limit(end);
     }
-//     if (req.body.searchType == "fullName") {
-//       filterData = filterData.filter((form) => {
-//         if (
-//           form.name == req.body.searchValue ||
-//           form.fullName.includes(req.body.searchValue)
-//         )
-//           return form;
-//       });
-//     }
-    //   console.log(filterData);
     return res.status(200).json(filterData);
   } catch (error) {
     res.status(400).json(error);
@@ -404,5 +432,7 @@ module.exports = {
   getNumberOfForms,
   filter,
   getForms2,
-  editPrintNumber
+  editPrintNumber,
+  getMostafidForms,
+  getMshMostafidForms
 };
