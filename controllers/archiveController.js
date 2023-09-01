@@ -3,7 +3,7 @@ const Log = require("../models/logsModel");
 const IP = require("ip");
 const os = require("os");
 const add = async (req, res) => {
-  const { region, number, bookNumber, date } = req.body;
+  const { region, number, bookNumber, date, date2 } = req.body;
   if (!req.user || !req.file) {
     return res.status(400).json("حدث خطأ ما حاول مره اخري");
   }
