@@ -9,6 +9,7 @@ const add = async (req, res) => {
   }
   
   try {
+    console.log(req.user)
     if(!req.user.hidden){
         await Log.create({
           type: "اضافه",
