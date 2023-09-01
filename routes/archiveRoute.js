@@ -7,5 +7,5 @@ router.post('/add',upload.single("file"), check.validation, add)
 router.post('/search',check.validation, search)
 router.get('/get', check.validation , get)
 router.get('/getAll', check.validation , getAll)
-router.delete('/:id', check.validation , deleteArchive)
+router.delete('/', check.validation , deleteArchive)
 module.exports = router
