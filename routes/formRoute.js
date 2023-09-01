@@ -10,11 +10,15 @@ const {
   getNumberOfForms,
   filter,
   getForms2,
-  editPrintNumber
+  editPrintNumber,
+  getMshMostafidForms,
+  getMostafidForms
 } = require("../controllers/formController");
 const Form = require("../models/formModel");
 router.post("/create", check.validation, upload2.single("file"), createForm);
 router.get("/", check.validation, getForms);
+router.get("/mostafid", check.validation, getMostafidForms);
+router.get("/mshmostafid", check.validation, getMshMostafidForms);
 router.post("/front", getForms2);
 
 router.delete("/delete/:id", check.validation, deleteForm);
