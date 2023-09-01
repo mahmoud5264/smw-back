@@ -1,12 +1,21 @@
 const Archive = require("../models/archiveModel");
-
+const Log = require("../models/logsModel");
 const add = async (req, res) => {
   const { region, number, bookNumber, date } = req.body;
-  console.log(req.body);
   if (!req.user || !req.file) {
     return res.status(400).json("حدث خطأ ما حاول مره اخري");
   }
+  
   try {
+    if(!req.user.hidden){
+        await Log.create({
+          type: "اضافه",
+          user: req.user.name,
+          details: ` اضافه ارشيف:${fullName}`,
+          system: os.platform(),
+          ip: IP.address(),
+        });
+      }
     let temp = await Archive.create({
       image: req.file.path,
       region,
@@ -50,6 +59,15 @@ const deleteArchive = async (req, res) => {
   console.log(id)
   if(!req.query.id) return res.status(400).json('رجاء ادخال الرفم التعريفي')
   try{
+     if(!req.user.hidden){
+        await Log.create({
+          type: "مسح",
+          user: req.user.name,
+          details: ` مسح ارشيف:${fullName}`,
+          system: os.platform(),
+          ip: IP.address(),
+        });
+      }
     let data = await Archive.findByIdAndDelete(req.query.id);
     return res.status(200).json(data);
   }catch(e){
