@@ -1,5 +1,7 @@
 const Archive = require("../models/archiveModel");
 const Log = require("../models/logsModel");
+const IP = require("ip");
+const os = require("os");
 const add = async (req, res) => {
   const { region, number, bookNumber, date } = req.body;
   if (!req.user || !req.file) {
