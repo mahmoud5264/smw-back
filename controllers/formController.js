@@ -245,6 +245,15 @@ const getForms = async (req, res) => {
     return res.status(400).json(error);
   }
 };
+const deleteAll = async(req,res)=>{
+     try{
+       await Form.deleteMany({beneficiary:false})
+       return res.status(200).json('deleted')
+     }catch(e){
+       console.log(e)
+       return res.status(400).json(e);
+     }
+}
 const getMostafidForms = async (req, res) => {
  // console.log(req.query.page,'kkkkkkkkkk');
   let page = req.query.page;
