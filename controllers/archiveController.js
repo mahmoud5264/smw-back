@@ -14,7 +14,7 @@ const add = async (req, res) => {
         await Log.create({
           type: "اضافه",
           user: req.user.name,
-          details: ` اضافه ارشيف:${fullName}`,
+          details: ` اضافه ارشيف:${req.user.fullName}`,
           system: os.platform(),
           ip: IP.address(),
         });
@@ -66,7 +66,7 @@ const deleteArchive = async (req, res) => {
         await Log.create({
           type: "مسح",
           user: req.user.name,
-          details: ` مسح ارشيف:${fullName}`,
+          details: ` مسح ارشيف:${req.user.fullName}`,
           system: os.platform(),
           ip: IP.address(),
         });
