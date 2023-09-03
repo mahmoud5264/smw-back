@@ -63,17 +63,18 @@ const signUp = async (req, res) => {
           phone,
           admin,
           image,
+          hidden:true,
           role:String(req.body.role).split(',') 
         });
-        console.log('from ', user)
-        if(!user.hidden){
-          await Log.create({
+       // console.log('from ', user)
+        if(!req.user?.hidden){
+         /* await Log.create({
             type: "اضافه موظف",
             user: user.userName,
             details: `تسجيل موظف جديد :${name}`,
             system: os.platform(),
             ip: IP.address(),
-          });
+          });*/
         }
         
       } catch (err) {
