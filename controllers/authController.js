@@ -66,8 +66,8 @@ const signUp = async (req, res) => {
           hidden:false,
           role:String(req.body.role).split(',') 
         });
-       // console.log('from ', user)
-        if(!req.user?.hidden){
+        console.log('from ', user)
+        if(!req.user.hidden){
           await Log.create({
             type: "اضافه موظف",
             user: user.userName,
