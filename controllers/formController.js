@@ -379,13 +379,12 @@ const getForms2 = async (req, res) => {
   let start = (page - 1) * 30 || 0;
   let { search } = req.body;
   try {
-    let data = [];
+    let response = [];
     if (
       req.body.search &&
       req.body.search != "" &&
       Object.keys(req.body.search).length != 0
     ) {
-      let response = []
       await Form.find({
         $or: [
           {"husbandName" : {$regex : search}}
