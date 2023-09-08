@@ -385,34 +385,43 @@ const getForms2 = async (req, res) => {
       req.body.search != "" &&
       Object.keys(req.body.search).length != 0
     ) {
-      data = await Form.find({
+      let response = []
+      await Form.find({
         $or: [
-          {"husbandName" : {$eq : search}}
+          {"husbandName" : {$regex : search}}
           ,
-          {"fullName" : {$eq: search}},
-          {"area" : {$eq : search}},
-          {"assignDate" : {$eq: search}},
-          { "formNumber": {$eq: search} },
-          { "pieceNumber": {$eq: search} },
-          { "department": {$eq: search} },
-          { "paperNumber": {$eq: search} },
-          { "recordNumber": {$eq: search} },
-          { "motherName": {$eq: search} },
-          { "classType": {$eq: search} },
-          { "addressNubmer": {$eq: search} },
-          { "birthPlace": {$eq: search} },
+          {"fullName" : {$regex : search}},
+          {"area" : {$regex : search}},
+          {"assignDate" : {$regex: search}},
+          { "formNumber": {$regex: search} },
+          { "pieceNumber": {$regex: search} },
+          { "department": {$regex: search} },
+          { "paperNumber": {$regex: search} },
+          { "recordNumber": {$regex: search} },
+          { "motherName": {$regex: search} },
+          { "classType": {$regex: search} },
+          { "addressNubmer": {$regex: search} },
+          { "birthPlace": {$regex: search} },
         ],
       }).sort({ createdAt: -1 })
         .skip(start)
-        .limit(page * 30);
+        .limit(page * 30).then((data)=>{
+          for(let i = 0; i < data.length ;++i){
+            if(data[i]["husbandName"].includes(search) || data[i]["area"].includes(search) ||
+               data[i]["assignDate"].includes(search) || data[i]["formNumber"].includes(search) || data[i]["pieceNumber"].includes(search) ||
+              data[i]["department"].includes(search) || data[i]["paperNumber"].includes(search) || data[i]["recordNumber"].includes(search) || 
+              data[i]["motherName"].includes(search) || data[i]["classType"].includes(search) || data[i]["birthPlace"].includes(search))
+              response.push(data[i])
+          }
+        });
     } else {
-      data = await Form.find({})
+      response = await Form.find({})
         .sort({ createdAt: -1 })
         .skip(start)
         .limit(page * 30);
     }
 
-    return res.status(200).json(data);
+    return res.status(200).json(response);
   } catch (error) {
     console.log(error);
     return res.status(400).json(error);
