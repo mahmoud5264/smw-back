@@ -24,76 +24,7 @@ const conect = async () => {
     }
   );
 };
-/*
-server {
-  listen 80;
-cp -r build/* /var/www/frontend
 
-  server_name smwgoviraq.com www.smwgoviraq.com;
-  location / {
-         root /var/www/frontend;
-         index  index.html index.htm;
-         proxy_http_version 1.1;
-         proxy_set_header Upgrade $http_upgrade;
-         proxy_set_header Connection 'upgrade';
-         proxy_set_header Host $host;
-         proxy_cache_bypass $http_upgrade;
-         try_files $uri $uri/ /index.html;
-  }
-}
-smwgoviraqss.com
-
-server {
-  listen 80;
-
-  location / {
-        proxy_pass http://31.187.72.67:8000 ;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-  }
-}
-
-server {
- listen 80;
- server_name smwgoviraq.com www.smwgoviraq.com;
-
-location /app {
- root /var/www/frontend;
- index  index.html index.htm;
- proxy_http_version 1.1;
- proxy_set_header Upgrade $http_upgrade;
- proxy_set_header Connection 'upgrade';
- proxy_set_header Host $host;
- proxy_cache_bypass $http_upgrade;
- try_files $uri $uri/ /index.html;
-}
-}
-server_name smw-gov.com
-server {
-  listen 80;
-  location /api {
-    proxy_pass http://31.187.72.67:8800;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection 'upgrade';
-    proxy_set_header Host $host;
-    proxy_cache_bypass $http_upgrade;
-  }
-  location /app {
-    root /var/www/frontend;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection 'upgrade';
-    proxy_set_header Host $host;
-    proxy_cache_bypass $http_upgrade;
-  }
-
-}
-
-*/
 conect();
 //  console.log(process.env.URL);
 const formRouter = require("./routes/formRoute");
