@@ -405,13 +405,14 @@ const getForms2 = async (req, res) => {
       }).sort({ createdAt: -1 })
         .skip(start)
         .limit(page * 30).then((data)=>{
-          for(let i = 0; i < data.length ;++i){
+          /*for(let i = 0; i < data.length ;++i){
             if(data[i]["husbandName"]?.includes(search) || data[i]["area"]?.includes(search) ||
                data[i]["assignDate"]?.includes(search) || data[i]["formNumber"]?.includes(search) || data[i]["pieceNumber"]?.includes(search) ||
               data[i]["department"]?.includes(search) || data[i]["paperNumber"]?.includes(search) || data[i]["recordNumber"]?.includes(search) || 
               data[i]["motherName"]?.includes(search) || data[i]["classType"]?.includes(search) || data[i]["birthPlace"]?.includes(search))
               response.push(data[i])
-          }
+          }*/
+          response = data
         });
     } else {
       response = await Form.find({})
