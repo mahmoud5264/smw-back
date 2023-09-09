@@ -412,7 +412,7 @@ const getForms2 = async (req, res) => {
               data[i]["motherName"]?.includes(search) || data[i]["classType"]?.includes(search) || data[i]["birthPlace"]?.includes(search))
               response.push(data[i])
           }
-         // response = data
+          response = data
         });
     } else {
       response = await Form.find({})
