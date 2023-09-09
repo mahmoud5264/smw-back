@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Form = require("../models/formModel");
+const Print = require("../models/printedNumberModel.js");
 const Log = require("../models/logsModel");
 const IP = require("ip");
 const os = require("os");
@@ -325,8 +326,10 @@ const deleteForm = async (req, res) => {
 const getMyForms = async (req, res) => {
   console.log(String(req.params.id));
   try {
+    const numbers = await Print.find({}).sort({number:-1}).limit(1);
+    console.log(numbers)
     const forms = await Form.findById(req.params.id);
-    console.log(forms)
+//    console.log(forms)
     return res.status(200).json(forms);
     
   } catch (error) {
