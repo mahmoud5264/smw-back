@@ -327,9 +327,10 @@ const getMyForms = async (req, res) => {
   console.log(String(req.params.id));
   try {
     const numbers = await Print.find({}).sort({number:-1}).limit(1);
-    console.log(numbers[0].number)
+   // console.log(numbers[0].number)
     const forms = await Form.findById(req.params.id);
-    console.log(forms)
+ //   console.log(forms)
+    forms.number = numbers[0].number - 1;
     return res.status(200).json(forms);
     
   } catch (error) {
@@ -435,6 +436,7 @@ const editPrintNumber = async(req,res)=>{
   console.log(req.body)
   if(!req.body.id || !req.body.number ) return  res.status(400).json("id is not valid");
   try{
+    await Print.findOneAndUpdate({number:req.body.number},{number : req.body.number + 1}):
     let data = await Form.findByIdAndUpdate(req.body.id,{number:req.body.number});
     data.number = req.body.number
     return res.status(200).json(data)
