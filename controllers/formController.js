@@ -326,6 +326,7 @@ const deleteForm = async (req, res) => {
 const getMyForms = async (req, res) => {
   console.log(String(req.params.id));
   try {
+    await Print.create({number:1});
     const numbers = await Print.find({}).sort({number:-1}).limit(1);
     console.log(numbers)
     const forms = await Form.findById(req.params.id);
