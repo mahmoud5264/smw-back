@@ -152,7 +152,7 @@ const createForm = async (req, res) => {
   } = req.body;
   // if (!req.body.fullName && !req.file)
   //   return res.status(400).json("data is not completed");
-   console.log(note);
+   console.log(req.body);
   
 
   try {
