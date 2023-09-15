@@ -9,6 +9,7 @@ const formSchema = mongoose.Schema(
     addressNubmer: { type: String, default: null },
     recordNumber: { type: String, default: null },
     husbandName: { type: String, default: null, trim: true },
+    husbandName2: { type: String, default: null, trim: true },
     motherName: { type: String, default: null, trim: true },
     classType: { type: String, default: null, trim: true },
     birthDate: { type: String, default: null },
