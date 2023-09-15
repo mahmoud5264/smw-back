@@ -141,6 +141,7 @@ const createForm = async (req, res) => {
     paperNumber,
     recordNumber,
     husbandName,
+    husbandName2,
     motherName,
     classType,
     birthDate,
