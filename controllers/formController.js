@@ -156,7 +156,10 @@ const createForm = async (req, res) => {
   
 
   try {
-    let size = await Form.find({}).sort({ createdAt: -1 }).limit(1);
+   // let size = await Form.find({}).sort({ createdAt: -1 }).limit(1)
+    const numbers = await Print.find({}).sort({number:-1}).limit(1);
+   //   console.log(forms)
+    
     if (department) {
       Class.findOneAndUpdate(
         {
@@ -203,6 +206,7 @@ const createForm = async (req, res) => {
       createdBy: req.user.fullName,
       note
     });
+    tmp.number = numbers[0].number - 1;
     if (!req.file && !req.user.hidden) {
       Log.create({
         type: "اضافه استماره",
