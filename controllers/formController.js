@@ -113,7 +113,7 @@ const createForm = async (req, res) => {
           tmp.addressNubmer = res["المقاطعه"];
           tmp.area = res["المساحه"];
           tmp.assignDate = res["تاريخ التخصيص"];
-          tmp.beneficiary = res["مستفيد"].includes("مستفيد")?true:false ;
+          tmp.beneficiary = res["مستفيد"]?.includes("مستفيد")?true:false ;
           tmp.formNumber = res["رقم معرف"];
           tmp.note = res["الملاحظه"];
           data.push(tmp);
