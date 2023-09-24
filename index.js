@@ -42,7 +42,7 @@ app.use("/class", classRouter);
 app.use("/backup", backRouter);
 app.use("/archive", archiveRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log(`server is running on port ${process.env.PORT}`);
+app.listen(5000, () => {
+  console.log(`server is running on port 5000`);
 });
 // ln -s /etc/nginx/sites-available/test.com /etc/nginx/sites-enabled/test.com
